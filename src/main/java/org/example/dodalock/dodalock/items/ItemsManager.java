@@ -14,13 +14,13 @@ public class ItemsManager {
     private static ItemStack codeLock;
     private static ItemStack lock;
     private static ItemStack key;
-    private static ItemStack inventoryPart;
+    private static ItemStack bunchKeys;
 
     public static void initializeItems() {
         createCodeLock();
         createLock();
         createKey();
-        createInventoryPart();
+        createBunchKeys();
     }
 
     private static void createCodeLock() {
@@ -69,14 +69,21 @@ public class ItemsManager {
         Bukkit.addRecipe(recipe);
     }
 
-    private static void createInventoryPart() {
-        inventoryPart = new ItemStack(Material.SHULKER_SHELL);
-        ItemMeta itemMeta = inventoryPart.getItemMeta();
-        itemMeta.setCustomModelData(10000);
-        itemMeta.setDisplayName(ChatColor.RESET + "");
+    private static void createBunchKeys() {
+        bunchKeys = new ItemStack(Material.BOOK);
+        ItemMeta itemMeta = bunchKeys.getItemMeta();
+        itemMeta.setCustomModelData(4);
+        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate("items_name.bunch_keys"));
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        inventoryPart.setItemMeta(itemMeta);
+        bunchKeys.setItemMeta(itemMeta);
+
+        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("bunch_of_keys"), bunchKeys);
+        recipe.shape(" $ ", "$%$", " $ ");
+        recipe.setIngredient('%', Material.IRON_INGOT);
+        recipe.setIngredient('$', Material.STRING);
+        Bukkit.addRecipe(recipe);
     }
+
 
     public static ItemStack getCodeLock() { return codeLock; }
 
@@ -84,5 +91,5 @@ public class ItemsManager {
 
     public static ItemStack getKey() { return key; }
 
-    public static ItemStack getInventoryPart() { return inventoryPart; }
+    public static ItemStack getBunchKeys() { return bunchKeys; }
 }

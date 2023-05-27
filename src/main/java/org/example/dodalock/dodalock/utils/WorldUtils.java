@@ -26,9 +26,6 @@ public class WorldUtils {
     }
 
     public static boolean isDoubleChest(Block block) {
-        System.out.println(isChest(block) &&
-                ((Chest) block.getState()).getInventory() instanceof DoubleChestInventory);
-
         return isChest(block) &&
                 ((Chest) block.getState()).getInventory() instanceof DoubleChestInventory;
     }

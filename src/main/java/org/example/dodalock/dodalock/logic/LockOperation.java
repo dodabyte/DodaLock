@@ -43,11 +43,6 @@ public class LockOperation {
                 Configurations.getConfig().changeKey(location, FormattableUtils.getUuidString(uuid));
             }
         }
-        else {
-            if (Configurations.getConfig().isLock(location)) {
-
-            }
-        }
         Configurations.save();
         Configurations.reload();
     }

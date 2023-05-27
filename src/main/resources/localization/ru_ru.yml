@@ -2,6 +2,7 @@ items_name:
   code_lock: 'Кодовый замок'
   lock : 'Замок'
   key: 'Ключ'
+  bunch_keys: 'Связка ключей'
 gui:
   number_1: '1'
   number_2: '2'

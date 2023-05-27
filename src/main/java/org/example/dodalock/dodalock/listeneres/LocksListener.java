@@ -33,7 +33,6 @@ public class LocksListener implements Listener {
         if (clicked != null && event.getAction() == Action.RIGHT_CLICK_BLOCK &&
             WorldUtils.isTrueTypes(clicked)) {
             location = getLocation(clicked, player);
-            System.out.println(location);
             if (location != null) {
                 if (player.isSneaking()) {
                     // Открытие меню кодового замка при его наличии на двери
@@ -84,6 +83,7 @@ public class LocksListener implements Listener {
                                         getLocationString(location)), PersistentDataType.STRING)) {
                             id_key = container.get(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.
                                     getLocationString(location)), PersistentDataType.STRING);
+                            System.out.println("Ya v persistentDataContainer");
                         }
                     }
 

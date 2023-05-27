@@ -1,13 +1,19 @@
 package org.example.dodalock.dodalock.utils.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.DodaLockMain;
+import org.example.dodalock.dodalock.items.ItemsManager;
+import org.example.dodalock.dodalock.utils.FormattableUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 public class LanguageConfiguration {
     private FileConfiguration fileLanguageConfiguration;
@@ -27,9 +33,46 @@ public class LanguageConfiguration {
             fileLanguageConfiguration = YamlConfiguration.loadConfiguration(reader);
         }
         catch (NullPointerException e) { System.out.println("Error in InputStreamReader: " + e); }
+
+        checkItemsLocalization();
     }
 
     public String translate(String key) {
         return fileLanguageConfiguration.getString(key);
+    }
+
+    public void checkItemsLocalization() {
+        for (Player player: DodaLockMain.getPlugin().getServer().getOnlinePlayers()) {
+            if (player.getInventory().contains(ItemsManager.getCodeLock()) ||
+                    player.getInventory().contains(ItemsManager.getLock()) ||
+                    player.getInventory().contains(ItemsManager.getKey()) ||
+                    player.getInventory().contains(ItemsManager.getBunchKeys())) {
+                for (int i = 0; i < player.getInventory().getSize(); i++) {
+                    if (player.getInventory().getItem(i) != null &&
+                            player.getInventory().getItem(i).equals(ItemsManager.getCodeLock())) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(translate("items_name.code_lock"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    }
+                    else if (player.getInventory().getItem(i) != null &&
+                            player.getInventory().getItem(i).equals(ItemsManager.getLock())) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(translate("items_name.lock"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    }
+                    else if (player.getInventory().getItem(i) != null &&
+                            player.getInventory().getItem(i).equals(ItemsManager.getKey())) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(translate("items_name.key"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    }
+                    else if (player.getInventory().getItem(i) != null) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(translate("items_name.bunch_keys"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    }
+                }
+            }
+        };
     }
 }

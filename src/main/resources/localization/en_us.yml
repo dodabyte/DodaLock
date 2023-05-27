@@ -2,6 +2,7 @@ items_name:
   code_lock: 'Code lock'
   lock : 'Lock'
   key: 'Key'
+  bunch_keys: 'Bunch of keys'
 gui:
   number_1: '1'
   number_2: '2'

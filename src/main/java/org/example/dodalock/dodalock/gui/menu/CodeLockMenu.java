@@ -4,14 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.example.dodalock.dodalock.gui.Menu;
+import org.example.dodalock.dodalock.gui.GuiItemsManager;
+import org.example.dodalock.dodalock.gui.holders.CodeLockMenuHolder;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.logic.CheckPlayersAttempts;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
-public class CodeLockMenu extends Menu {
+public class CodeLockMenu extends CodeLockMenuHolder {
     private final ItemStack EMPTY_FIELD = makeItem(Material.WHITE_STAINED_GLASS_PANE,
             Configurations.getLanguage().translate("gui.plug"));
     private final ItemStack CONFIRM_BUTTON = makeItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN +
@@ -38,6 +38,7 @@ public class CodeLockMenu extends Menu {
 
     @Override
     public void handleMenu(InventoryClickEvent event) {
+        event.setCancelled(true);
         if (event.getInventory().equals(this.getInventory())) {
             ItemStack clickedItem = event.getCurrentItem();
             if (clickedItem != null && clickedItem.getItemMeta() != null &&
@@ -125,10 +126,6 @@ public class CodeLockMenu extends Menu {
         }
     }
 
-    private Inventory getItemStacks() {
-        return inventory;
-    }
-
     @Override
     public void setMenuItems() {
         // CodeLock buttons
@@ -166,7 +163,7 @@ public class CodeLockMenu extends Menu {
         // Inventory parts
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) == null) {
-                inventory.setItem(i, ItemsManager.getInventoryPart());
+                inventory.setItem(i, GuiItemsManager.getInventoryPart());
             }
         }
     }
@@ -187,10 +184,5 @@ public class CodeLockMenu extends Menu {
     private boolean isOptionsButtons(ItemStack item) {
         return item.getType().equals(Material.LIME_STAINED_GLASS_PANE) ||
                 item.getType().equals(Material.RED_STAINED_GLASS_PANE);
-    }
-
-    // TODO Мб и не надо
-    private boolean checkItem(ItemStack item, Material material, String name) {
-        return item.getType().equals(material) && item.getItemMeta().getDisplayName().equals(name);
     }
 }

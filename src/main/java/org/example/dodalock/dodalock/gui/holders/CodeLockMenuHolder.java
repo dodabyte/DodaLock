@@ -1,7 +1,6 @@
-package org.example.dodalock.dodalock.gui;
+package org.example.dodalock.dodalock.gui.holders;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,12 +11,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 
-public abstract class Menu implements InventoryHolder {
+public abstract class CodeLockMenuHolder implements InventoryHolder {
     protected Player player;
     protected Inventory inventory;
-    protected ItemStack FILLER_GLASS = makeItem(Material.GRAY_STAINED_GLASS_PANE, " ");
 
-    public Menu(Player player) {
+    public CodeLockMenuHolder(Player player) {
         this.player = player;
     }
 
@@ -25,7 +23,7 @@ public abstract class Menu implements InventoryHolder {
 
     public abstract int getSlots();
 
-    public abstract void handleMenu(InventoryClickEvent e);
+    public abstract void handleMenu(InventoryClickEvent event);
 
     public abstract void setMenuItems();
 
