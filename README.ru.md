@@ -1,3 +1,8 @@
+# Select the readme language:
+
+* [English (Default)](README.md)
+* [Russian](README.ru.md)
+
 # DodaLock v1.0
 
 ## Description
