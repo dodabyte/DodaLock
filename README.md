@@ -1,9 +1,6 @@
-# Select the readme language
-
-* [English (Default)](README.md)
-* [Russian](README.ru.md)
-
 # DodaLock
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)
 
 Spigot plugin adds locks and code locks for doors, trapdoors, barrels and chests.
 

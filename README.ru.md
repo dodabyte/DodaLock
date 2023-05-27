@@ -1,9 +1,6 @@
-# Выберите язык readme
-
-* [English (Default)](README.md)
-* [Russian](README.ru.md)
-
 # DodaLock v1.0
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)
 
 ## Описание
 
