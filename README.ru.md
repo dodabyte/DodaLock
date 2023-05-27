@@ -1,4 +1,4 @@
-# Select the readme language:
+# Выберите язык readme:
 
 * [English (Default)](README.md)
 * [Russian](README.ru.md)
