@@ -1,0 +1,7 @@
+/.gradle/
+/.settings/
+.idea/
+build/
+target/
+*.iml
+snapshot_classes
