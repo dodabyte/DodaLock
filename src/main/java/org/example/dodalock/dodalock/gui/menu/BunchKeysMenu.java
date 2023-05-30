@@ -5,8 +5,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.example.dodalock.dodalock.gui.holders.BunchKeysMenuHolder;
 
 public class BunchKeysMenu extends BunchKeysMenuHolder {
-    public BunchKeysMenu(Player player) {
-        super(player);
+    public BunchKeysMenu(Player player, String idBunchKeys) {
+        super(player, idBunchKeys);
     }
 
     @Override

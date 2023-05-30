@@ -36,21 +36,22 @@ public class InventoryConfiguration {
         getFileInventoryConfiguration().createSection("inventory");
     }
 
-    public static void serialize(Player player, Inventory inventory) {
+    public static void serialize(Player player, String bunchKeys, Inventory inventory) {
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) != null) {
-                getFileInventoryConfiguration().set("inventory." + player.getName() + "." + i, inventory.getItem(i));
+                getFileInventoryConfiguration().set("inventory." + player.getName() + "." + bunchKeys + "." + i, inventory.getItem(i));
             }
-            else getFileInventoryConfiguration().set("inventory." + player.getName() + "." + i, null);
+            else getFileInventoryConfiguration().set("inventory." + player.getName() + "." + bunchKeys + "." + i, null);
         }
         save();
         reload();
     }
 
-    public static void deserialize(Player player, Inventory inventory) {
+    public static void deserialize(Player player, String bunchKeys, Inventory inventory) {
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (getFileInventoryConfiguration().contains("inventory." + player.getName() + "." + i)) {
-                inventory.setItem(i, getFileInventoryConfiguration().getItemStack("inventory." + player.getName() + "." + i));
+            if (getFileInventoryConfiguration().contains("inventory." + player.getName() + "." + bunchKeys + "." + i)) {
+                inventory.setItem(i, getFileInventoryConfiguration().getItemStack("inventory." + player.getName() +
+                        "." + bunchKeys + "." + i));
             }
         }
     }

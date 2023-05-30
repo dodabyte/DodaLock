@@ -12,7 +12,6 @@ public class Configurations {
     private static FileConfiguration fileConfiguration;
     private static MainConfiguration CONFIG;
     private static LanguageConfiguration LANGUAGE;
-    private static InventoryConfiguration INVENTORY_CONFIG;
 
     public static void setup() {
         file = new File(DodaLockMain.getPlugin().getDataFolder(), "config.yml");
@@ -32,8 +31,6 @@ public class Configurations {
             CONFIG = new MainConfiguration(fileConfiguration);
         }
         LANGUAGE = new LanguageConfiguration(getConfig().getLanguage());
-        new InventoryConfiguration();
-
 
         getFileConfiguration().options().copyDefaults(true);
         save();

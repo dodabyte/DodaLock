@@ -73,37 +73,29 @@ public class LocksListener implements Listener {
                         event.setCancelled(true);
                     }
 
-                    String id_key = "";
-                    if (player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey())) {
-                        ItemStack itemInMainHand = player.getEquipment().getItemInMainHand();
-                        ItemMeta itemMeta = itemInMainHand.getItemMeta();
-                        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-                        if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                                container.has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.
-                                        getLocationString(location)), PersistentDataType.STRING)) {
-                            id_key = container.get(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.
-                                    getLocationString(location)), PersistentDataType.STRING);
-                            System.out.println("Ya v persistentDataContainer");
-                        }
-                    }
-
-                    // При попытке открыть дверь, когда замок установлен и игрок не держит ключ в руках
+                    // При попытке открыть дверь, когда замок установлен и игрок не держит ключ от данного замка
                     // -> отмена открытия двери
                     if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
                             Configurations.getConfig().isKey(FormattableUtils.getLocationString(location)) &&
-                            ((player.getEquipment().getItemInMainHand().getItemMeta() != null &&
-                            !player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
+                            (player.getEquipment().getItemInMainHand().getItemMeta() != null &&
+                            ((!player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
                             has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
-                            PersistentDataType.STRING)) || player.getEquipment().getItemInMainHand().getItemMeta() == null)) {
+                            PersistentDataType.STRING)) && (!player.getEquipment().getItemInMainHand().getItemMeta().
+                            getPersistentDataContainer().has(new NamespacedKey(DodaLockMain.getPlugin(),
+                            "bunch_keys"), PersistentDataType.STRING))) ||
+                            player.getEquipment().getItemInMainHand().getItemMeta() == null)) {
                         event.setCancelled(true);
                     }
-                    // При попытке открыть дверь, когда замок установлен, игрок держит ключ в руках,
-                    // но не от данного замка -> отмена открытия двери
+                    // При попытке открыть дверь, когда замок установлен и игрок держит связку ключей, в которой нет
+                    // ключа от замка -> отмена открытия двери
                     else if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
                             Configurations.getConfig().isKey(FormattableUtils.getLocationString(location)) &&
-                            player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey()) && id_key != null &&
-                            !id_key.equals("") && !Configurations.getConfig().isTrueKey(FormattableUtils.
-                            getLocationString(location), id_key)) {
+                            player.getEquipment().getItemInMainHand().getItemMeta() != null &&
+                            player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
+                            has(new NamespacedKey(DodaLockMain.getPlugin(), "bunch_keys"), PersistentDataType.STRING) &&
+                            !checkDoorWithBunchKeys(player, location, player.getEquipment().getItemInMainHand().
+                            getItemMeta().getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
+                            "bunch_keys"), PersistentDataType.STRING))) {
                         event.setCancelled(true);
                     }
                 }
@@ -117,11 +109,12 @@ public class LocksListener implements Listener {
             if (location != null) {
                 if (player.isSneaking()) {
                     // Удаление игрока из памяти кодового замка
-                    // TODO Изменить это на снятие кодового замка
-                    // TODO Так как забытие пароля будет в интерфейсе замка
                     if (Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location))) {
-                        Configurations.getConfig().removePlayerFromCodeLockData(FormattableUtils.
-                                getLocationString(location), player);
+                        Configurations.getConfig().removeCodeLock(FormattableUtils.getLocationString(location));
+                        Configurations.getConfig().removeCodeLockFromList(FormattableUtils.getLocationString(location));
+                        location.getWorld().dropItem(location, ItemsManager.getCodeLock());
+                        Configurations.save();
+                        Configurations.reload();
                     }
 
                     // Удаление замка из конфига
@@ -130,6 +123,9 @@ public class LocksListener implements Listener {
                             player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey())) {
                         Configurations.getConfig().removeLock(FormattableUtils.getLocationString(location));
                         Configurations.getConfig().removeLockFromList(FormattableUtils.getLocationString(location));
+                        location.getWorld().dropItem(location, ItemsManager.getLock());
+                        Configurations.save();
+                        Configurations.reload();
                     }
                 }
             }
@@ -189,5 +185,22 @@ public class LocksListener implements Listener {
             }
         }
         return null;
+    }
+
+    private boolean checkDoorWithBunchKeys(Player player, Location location, String idBunchKeys) {
+        boolean isTrueKeysInBunch = false;
+
+        if (idBunchKeys != null && !idBunchKeys.equals("") &&
+                Configurations.getConfig().isBunchKeys(player, idBunchKeys)) {
+            for (ItemStack item : Configurations.getConfig().getKeysInBunchKeys(player, idBunchKeys)) {
+                if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
+                        has(new NamespacedKey(DodaLockMain.getPlugin(),
+                        FormattableUtils.getLocationString(location)),
+                        PersistentDataType.STRING)) {
+                    isTrueKeysInBunch = true;
+                }
+            }
+        }
+        return isTrueKeysInBunch;
     }
 }

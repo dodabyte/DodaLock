@@ -25,7 +25,8 @@ public class LockOperation {
                     player.updateInventory();
                 }
             }
-            // Замок имеется на двери, при этом у игрока в руках ключ, а ранее ключ не был записан -> запись ключа
+            // Замок имеется на двери, при этом у игрока в руках ключ или связка ключей,
+            // а ранее ключ не был записан -> запись ключа
             else if (Configurations.getConfig().isLock(location) &&
                     player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey()) &&
                     (!Configurations.getConfig().isKey(location))) {

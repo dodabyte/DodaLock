@@ -2,7 +2,10 @@ package org.example.dodalock.dodalock.utils.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +14,7 @@ public class MainConfiguration {
 
     public MainConfiguration(FileConfiguration fileConfiguration) {
         this.fileConfiguration = fileConfiguration;
+        new InventoryConfiguration();
     }
 
     public void setLanguage(String language) { getFileConfiguration().set("language", language); }
@@ -47,6 +51,10 @@ public class MainConfiguration {
         locksList.add(location);
         getFileConfiguration().set("data.locks_list", null);
         getFileConfiguration().set("data.locks_list", locksList);
+    }
+
+    public void addBunchKeys(Player player, String bunchKeys) {
+        getFileConfiguration().createSection("inventory." + player.getName() + "." + bunchKeys);
     }
 
     public void addPlayerInCodeLockData(String location, Player player) {
@@ -127,6 +135,29 @@ public class MainConfiguration {
 
     public boolean isKey(String location) {
         return isLock(location) && getKey(location) != null && !getKey(location).equals("");
+    }
+
+    public boolean isBunchKeys(Player player, String bunchKeys) {
+        return bunchKeys != null && !bunchKeys.equals("") &&
+            InventoryConfiguration.getFileInventoryConfiguration().contains("inventory." + player.getName() + "." + bunchKeys);
+    }
+
+    public int getCountBunchKeys(Player player) {
+        if (InventoryConfiguration.getFileInventoryConfiguration().getList("inventory." + player.getName()) != null)
+            return InventoryConfiguration.getFileInventoryConfiguration().getList("inventory." + player.getName()).size();
+        return 0;
+    }
+
+    public List<ItemStack> getKeysInBunchKeys(Player player, String bunchKeys) {
+        List<ItemStack> itemStackList = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            if (InventoryConfiguration.getFileInventoryConfiguration().contains("inventory." + player.getName() + "." +
+                    bunchKeys + "." + i)) {
+                itemStackList.add(InventoryConfiguration.getFileInventoryConfiguration().getItemStack("inventory." +
+                        player.getName() + "." + bunchKeys + "." + i));
+            }
+        }
+        return itemStackList;
     }
 
     public List<String> getCodeLockData() {

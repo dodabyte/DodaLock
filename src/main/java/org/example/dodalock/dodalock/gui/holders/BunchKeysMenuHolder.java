@@ -15,9 +15,11 @@ import java.util.Arrays;
 public abstract class BunchKeysMenuHolder implements InventoryHolder {
     protected Player player;
     protected Inventory inventory;
+    protected String idBunchKeys;
 
-    public BunchKeysMenuHolder(Player player) {
+    public BunchKeysMenuHolder(Player player, String idBunchKeys) {
         this.player = player;
+        this.idBunchKeys = idBunchKeys;
     }
 
     public abstract String getMenuName();
@@ -28,7 +30,7 @@ public abstract class BunchKeysMenuHolder implements InventoryHolder {
 
     public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
-        InventoryConfiguration.deserialize(getPlayer(), inventory);
+        InventoryConfiguration.deserialize(getPlayer(), getIdBunchKeys(), inventory);
         getPlayer().openInventory(inventory);
     }
 
@@ -40,6 +42,8 @@ public abstract class BunchKeysMenuHolder implements InventoryHolder {
     public Player getPlayer() {
         return player;
     }
+
+    public String getIdBunchKeys() { return idBunchKeys; }
 
     public ItemStack makeItem(Material material, String displayName, String... lore) {
         ItemStack item = new ItemStack(material);

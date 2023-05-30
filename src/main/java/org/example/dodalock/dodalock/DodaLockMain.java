@@ -49,24 +49,23 @@ public final class DodaLockMain extends JavaPlugin {
     }
 
     private static void checkLocks() {
-        // TODO Разобраться с ошибкой
-//        List<String> codeLocksList = Configurations.getConfig().getCodeLockData();
-//        for (String codeLock : codeLocksList) {
-//            Location location = FormattableUtils.getLocationFromString(codeLock);
-//            if (!WorldUtils.isTrueTypes(location.getBlock())) {
-//                Configurations.getConfig().removeCodeLockFromList(codeLock);
-//                Configurations.getConfig().removeCodeLock(codeLock);
-//            }
-//        }
-//
-//        List<String> locksList = Configurations.getConfig().getLockData();
-//        for (String lock : locksList) {
-//            Location location = FormattableUtils.getLocationFromString(lock);
-//            if (!WorldUtils.isTrueTypes(location.getBlock())) {
-//                Configurations.getConfig().removeLockFromList(lock);
-//                Configurations.getConfig().removeLock(lock);
-//            }
-//        }
+        List<String> codeLocksList = Configurations.getConfig().getCodeLockData();
+        for (String codeLock : codeLocksList) {
+            Location location = FormattableUtils.getLocationFromString(codeLock);
+            if (!WorldUtils.isTrueTypes(location.getBlock())) {
+                Configurations.getConfig().removeCodeLockFromList(codeLock);
+                Configurations.getConfig().removeCodeLock(codeLock);
+            }
+        }
+
+        List<String> locksList = Configurations.getConfig().getLockData();
+        for (String lock : locksList) {
+            Location location = FormattableUtils.getLocationFromString(lock);
+            if (!WorldUtils.isTrueTypes(location.getBlock())) {
+                Configurations.getConfig().removeLockFromList(lock);
+                Configurations.getConfig().removeLock(lock);
+            }
+        }
     }
 
     public static DodaLockMain getPlugin() { return PLUGIN; }
