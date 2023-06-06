@@ -43,13 +43,13 @@ public class BunchKeysListener implements Listener {
                 idBunchKeys = container.get(key, PersistentDataType.STRING);
 
                 // Если связка ключей не прописана в конфиге, то добавляем ему идентификатор в конфиг
-                if (!Configurations.getConfig().isBunchKeys(player, idBunchKeys)) {
+                if (!Configurations.getConfig().isBunchKeys(idBunchKeys)) {
                     UUID uuid = UUID.randomUUID();
                     idBunchKeys = FormattableUtils.getUuidString(uuid);
                     itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, FormattableUtils.getUuidString(uuid));
                     itemInMainHand.setItemMeta(itemMeta);
 
-                    Configurations.getConfig().addBunchKeys(player, idBunchKeys);
+                    Configurations.getConfig().addBunchKeys(idBunchKeys);
                     Configurations.save();
                     Configurations.reload();
                 }
@@ -63,7 +63,7 @@ public class BunchKeysListener implements Listener {
     @EventHandler
     public void onBunchKeysInventoryClosed(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof BunchKeysMenuHolder)
-            InventoryConfiguration.serialize((Player) event.getPlayer(), bunchKeysMenu.getIdBunchKeys(),
+            InventoryConfiguration.serialize(bunchKeysMenu.getIdBunchKeys(),
                     event.getInventory());
     }
 }

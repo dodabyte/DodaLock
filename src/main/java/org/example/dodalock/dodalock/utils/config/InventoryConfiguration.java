@@ -8,6 +8,9 @@ import org.bukkit.inventory.ItemStack;
 import org.example.dodalock.dodalock.DodaLockMain;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class InventoryConfiguration {
@@ -36,22 +39,23 @@ public class InventoryConfiguration {
         getFileInventoryConfiguration().createSection("inventory");
     }
 
-    public static void serialize(Player player, String bunchKeys, Inventory inventory) {
+    public static void serialize(String bunchKeys, Inventory inventory) {
+        getFileInventoryConfiguration().set("inventory." + bunchKeys + ".date_last_serialize", LocalDateTime.now().toString());
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) != null) {
-                getFileInventoryConfiguration().set("inventory." + player.getName() + "." + bunchKeys + "." + i, inventory.getItem(i));
+                getFileInventoryConfiguration().set("inventory." + bunchKeys + ".content." + i, inventory.getItem(i));
             }
-            else getFileInventoryConfiguration().set("inventory." + player.getName() + "." + bunchKeys + "." + i, null);
+            else getFileInventoryConfiguration().set("inventory." + bunchKeys + "." + i, null);
         }
         save();
         reload();
     }
 
-    public static void deserialize(Player player, String bunchKeys, Inventory inventory) {
+    public static void deserialize(String bunchKeys, Inventory inventory) {
         for (int i = 0; i < inventory.getSize(); i++) {
-            if (getFileInventoryConfiguration().contains("inventory." + player.getName() + "." + bunchKeys + "." + i)) {
-                inventory.setItem(i, getFileInventoryConfiguration().getItemStack("inventory." + player.getName() +
-                        "." + bunchKeys + "." + i));
+            if (getFileInventoryConfiguration().contains("inventory." + bunchKeys + ".content." + i)) {
+                inventory.setItem(i, getFileInventoryConfiguration().getItemStack("inventory." +
+                        "." + bunchKeys + ".content." + i));
             }
         }
     }

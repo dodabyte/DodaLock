@@ -30,7 +30,7 @@ public abstract class BunchKeysMenuHolder implements InventoryHolder {
 
     public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
-        InventoryConfiguration.deserialize(getPlayer(), getIdBunchKeys(), inventory);
+        InventoryConfiguration.deserialize(getIdBunchKeys(), inventory);
         getPlayer().openInventory(inventory);
     }
 

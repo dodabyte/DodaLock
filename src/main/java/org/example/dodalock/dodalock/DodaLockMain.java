@@ -2,12 +2,14 @@ package org.example.dodalock.dodalock;
 
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.example.dodalock.dodalock.gui.GuiItemsManager;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.listeneres.BunchKeysListener;
 import org.example.dodalock.dodalock.listeneres.MenuListener;
 import org.example.dodalock.dodalock.listeneres.LocksListener;
 import org.example.dodalock.dodalock.listeneres.PlayerJoinListener;
+import org.example.dodalock.dodalock.tasks.ClearBunchKeysInventory;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.WorldUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
@@ -29,6 +31,8 @@ public final class DodaLockMain extends JavaPlugin {
         registerCommands();
         ItemsManager.initializeItems();
         GuiItemsManager.initializeGuiItems();
+
+        checkBunchKeys();
     }
 
     @Override
@@ -48,7 +52,7 @@ public final class DodaLockMain extends JavaPlugin {
 
     }
 
-    private static void checkLocks() {
+    private void checkLocks() {
         List<String> codeLocksList = Configurations.getConfig().getCodeLockData();
         for (String codeLock : codeLocksList) {
             Location location = FormattableUtils.getLocationFromString(codeLock);
@@ -66,6 +70,14 @@ public final class DodaLockMain extends JavaPlugin {
                 Configurations.getConfig().removeLock(lock);
             }
         }
+    }
+
+    // TODO Проверить это!
+    public void checkBunchKeys() {
+        int period = Configurations.getConfig().getVerificationPeriod();
+        BukkitTask task = getPlugin().getServer().getScheduler().runTaskTimer(getPlugin(), () -> {
+            new ClearBunchKeysInventory().run();
+        }, 0, period * 60 * 60 * 20L);
     }
 
     public static DodaLockMain getPlugin() { return PLUGIN; }

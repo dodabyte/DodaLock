@@ -191,8 +191,8 @@ public class LocksListener implements Listener {
         boolean isTrueKeysInBunch = false;
 
         if (idBunchKeys != null && !idBunchKeys.equals("") &&
-                Configurations.getConfig().isBunchKeys(player, idBunchKeys)) {
-            for (ItemStack item : Configurations.getConfig().getKeysInBunchKeys(player, idBunchKeys)) {
+                Configurations.getConfig().isBunchKeys(idBunchKeys)) {
+            for (ItemStack item : Configurations.getConfig().getKeysInBunchKeys(idBunchKeys)) {
                 if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
                         has(new NamespacedKey(DodaLockMain.getPlugin(),
                         FormattableUtils.getLocationString(location)),
