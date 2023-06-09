@@ -7,16 +7,23 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class ClearBunchKeysInventory extends BukkitRunnable {
+    private final int period;
+
+    public ClearBunchKeysInventory(int period) {
+        this.period = period;
+    }
+
     @Override
     public void run() {
-        if (Configurations.getConfig().getAllowClearBunchKeysInventory()) {
-            for (String bunchKeys : Configurations.getConfig().getBunchKeys()) {
-                if (LocalDateTime.now().minus(3, ChronoUnit.HOURS).isAfter(
-                        Configurations.getConfig().getLastDateSerialize(bunchKeys)) ||
-                        LocalDateTime.now().minus(3, ChronoUnit.HOURS).isEqual(
-                        Configurations.getConfig().getLastDateSerialize(bunchKeys))) {
-                    Configurations.getConfig().removeBunchOfKeys(bunchKeys);
-                }
+        for (String bunchKeys : Configurations.getInventory().getBunchKeys()) {
+            if (Configurations.getInventory().getLastDateSerialize(bunchKeys) != null &&
+                    (LocalDateTime.now().minus(period, ChronoUnit.HOURS).isAfter(
+                    Configurations.getInventory().getLastDateSerialize(bunchKeys)) ||
+                    LocalDateTime.now().minus(period, ChronoUnit.HOURS).isEqual(
+                    Configurations.getInventory().getLastDateSerialize(bunchKeys)))) {
+                Configurations.getInventory().removeBunchOfKeys(bunchKeys);
+                Configurations.getInventory().save();
+                Configurations.getInventory().reload();
             }
         }
     }

@@ -1,6 +1,7 @@
 package org.example.dodalock.dodalock.gui.holders;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,9 +16,7 @@ public abstract class CodeLockMenuHolder implements InventoryHolder {
     protected Player player;
     protected Inventory inventory;
 
-    public CodeLockMenuHolder(Player player) {
-        this.player = player;
-    }
+    public CodeLockMenuHolder(Player player) { this.player = player;}
 
     public abstract String getMenuName();
 

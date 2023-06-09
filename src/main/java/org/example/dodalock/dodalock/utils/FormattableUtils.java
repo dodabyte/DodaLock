@@ -9,11 +9,14 @@ import java.util.UUID;
 
 public class FormattableUtils {
     public static Location getLocationFromString(String locationString) {
-        String[] partsLocation = locationString.split("_");
-        return new Location(Bukkit.getWorld(partsLocation[0]),
-                Double.parseDouble(partsLocation[1]),
-                Double.parseDouble(partsLocation[2]),
-                Double.parseDouble(partsLocation[3]));
+        if (locationString != null) {
+            String[] partsLocation = locationString.split("_");
+            return new Location(Bukkit.getWorld(partsLocation[0]),
+                    Double.parseDouble(partsLocation[1]),
+                    Double.parseDouble(partsLocation[2]),
+                    Double.parseDouble(partsLocation[3]));
+        }
+        return null;
     }
 
     public static String getLocationString(Location location) {

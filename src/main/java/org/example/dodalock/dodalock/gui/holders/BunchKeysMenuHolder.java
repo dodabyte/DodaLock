@@ -4,11 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.example.dodalock.dodalock.utils.config.InventoryConfiguration;
+import org.example.dodalock.dodalock.utils.config.Configurations;
 
 import java.util.Arrays;
 
@@ -30,7 +31,7 @@ public abstract class BunchKeysMenuHolder implements InventoryHolder {
 
     public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
-        InventoryConfiguration.deserialize(getIdBunchKeys(), inventory);
+        Configurations.getInventory().deserialize(getIdBunchKeys(), inventory);
         getPlayer().openInventory(inventory);
     }
 

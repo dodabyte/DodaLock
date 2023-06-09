@@ -1,0 +1,36 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "minecraft:item/shulker_shell"
+  },
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "custom:item/icon/inventory_part"},
+    {"predicate": { "custom_model_data": 2}, "model": "custom:item/icon/inventory_button_0"},
+    {"predicate": { "custom_model_data": 3}, "model": "custom:item/icon/inventory_button_1"},
+    {"predicate": { "custom_model_data": 4}, "model": "custom:item/icon/inventory_button_2"},
+    {"predicate": { "custom_model_data": 5}, "model": "custom:item/icon/inventory_button_3"},
+    {"predicate": { "custom_model_data": 6}, "model": "custom:item/icon/inventory_button_4"},
+    {"predicate": { "custom_model_data": 7}, "model": "custom:item/icon/inventory_button_5"},
+    {"predicate": { "custom_model_data": 8}, "model": "custom:item/icon/inventory_button_6"},
+    {"predicate": { "custom_model_data": 9}, "model": "custom:item/icon/inventory_button_7"},
+    {"predicate": { "custom_model_data": 10}, "model": "custom:item/icon/inventory_button_8"},
+    {"predicate": { "custom_model_data": 11}, "model": "custom:item/icon/inventory_button_9"},
+    {"predicate": { "custom_model_data": 12}, "model": "custom:item/icon/inventory_part_with_border_left"},
+    {"predicate": { "custom_model_data": 13}, "model": "custom:item/icon/inventory_part_with_border_up"},
+    {"predicate": { "custom_model_data": 14}, "model": "custom:item/icon/inventory_part_with_border_left_up"},
+    {"predicate": { "custom_model_data": 15}, "model": "custom:item/icon/inventory_part_with_border_dot_left_up"},
+    {"predicate": { "custom_model_data": 16}, "model": "custom:item/icon/inventory_field"},
+    {"predicate": { "custom_model_data": 17}, "model": "custom:item/icon/inventory_field_0"},
+    {"predicate": { "custom_model_data": 18}, "model": "custom:item/icon/inventory_field_1"},
+    {"predicate": { "custom_model_data": 19}, "model": "custom:item/icon/inventory_field_2"},
+    {"predicate": { "custom_model_data": 20}, "model": "custom:item/icon/inventory_field_3"},
+    {"predicate": { "custom_model_data": 21}, "model": "custom:item/icon/inventory_field_4"},
+    {"predicate": { "custom_model_data": 22}, "model": "custom:item/icon/inventory_field_5"},
+    {"predicate": { "custom_model_data": 23}, "model": "custom:item/icon/inventory_field_6"},
+    {"predicate": { "custom_model_data": 24}, "model": "custom:item/icon/inventory_field_7"},
+    {"predicate": { "custom_model_data": 25}, "model": "custom:item/icon/inventory_field_8"},
+    {"predicate": { "custom_model_data": 26}, "model": "custom:item/icon/inventory_field_9"},
+    {"predicate": { "custom_model_data": 27}, "model": "custom:item/icon/inventory_button_e"},
+    {"predicate": { "custom_model_data": 28}, "model": "custom:item/icon/inventory_button_c"}
+  ]
+}

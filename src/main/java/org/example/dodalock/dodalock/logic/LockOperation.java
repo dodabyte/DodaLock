@@ -16,9 +16,9 @@ public class LockOperation {
     public static void handle(Player player, String location) {
         if (player.isSneaking()) {
             // Замок отсутствует на двери -> добавление замка и создателя замка в конфиг
-            if (!Configurations.getConfig().isLock(location)) {
-                Configurations.getConfig().addLock(player, location);
-                if (player.getEquipment().getItemInMainHand().equals(ItemsManager.getLock()) &&
+            if (!Configurations.getLocks().isLock(location)) {
+                Configurations.getLocks().addLock(player, location);
+                if (ItemsManager.isLock(player.getEquipment().getItemInMainHand()) &&
                         player.getEquipment().getItemInMainHand().getAmount() > 0) {
                     player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()
                             .getItemInMainHand().getAmount() - 1);
@@ -27,11 +27,11 @@ public class LockOperation {
             }
             // Замок имеется на двери, при этом у игрока в руках ключ или связка ключей,
             // а ранее ключ не был записан -> запись ключа
-            else if (Configurations.getConfig().isLock(location) &&
-                    player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey()) &&
-                    (!Configurations.getConfig().isKey(location))) {
+            else if (Configurations.getLocks().isLock(location) &&
+                    ItemsManager.isKey(player.getEquipment().getItemInMainHand()) &&
+                    (!Configurations.getLocks().isKey(location))) {
                 UUID uuid = UUID.randomUUID();
-                ItemStack item = ItemsManager.getKey().clone();
+                ItemStack item = ItemsManager.getKey().getItemStack().clone();
                 ItemMeta itemMeta = item.getItemMeta();
                 NamespacedKey key = new NamespacedKey(DodaLockMain.getPlugin(), location);
                 itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, uuid.toString());
@@ -41,10 +41,10 @@ public class LockOperation {
                         .getItemInMainHand().getAmount() - 1);
                 player.getInventory().addItem(item);
                 player.updateInventory();
-                Configurations.getConfig().changeKey(location, FormattableUtils.getUuidString(uuid));
+                Configurations.getLocks().changeKey(location, FormattableUtils.getUuidString(uuid));
             }
         }
-        Configurations.save();
-        Configurations.reload();
+        Configurations.getLocks().save();
+        Configurations.getLocks().reload();
     }
 }

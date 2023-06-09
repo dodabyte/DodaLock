@@ -16,7 +16,6 @@ import org.example.dodalock.dodalock.gui.menu.BunchKeysMenu;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
-import org.example.dodalock.dodalock.utils.config.InventoryConfiguration;
 
 import java.util.UUID;
 
@@ -37,21 +36,21 @@ public class BunchKeysListener implements Listener {
             }
 
             if (event.getPlayer().isSneaking() &&
-                    (event.getPlayer().getEquipment().getItemInMainHand().equals(ItemsManager.getBunchKeys()) ||
+                    (ItemsManager.isBunchKeys(event.getPlayer().getEquipment().getItemInMainHand()) ||
                             container.has(key, PersistentDataType.STRING))) {
                 Player player = event.getPlayer();
                 idBunchKeys = container.get(key, PersistentDataType.STRING);
 
                 // Если связка ключей не прописана в конфиге, то добавляем ему идентификатор в конфиг
-                if (!Configurations.getConfig().isBunchKeys(idBunchKeys)) {
+                if (!Configurations.getInventory().isBunchKeys(idBunchKeys)) {
                     UUID uuid = UUID.randomUUID();
                     idBunchKeys = FormattableUtils.getUuidString(uuid);
                     itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, FormattableUtils.getUuidString(uuid));
                     itemInMainHand.setItemMeta(itemMeta);
 
-                    Configurations.getConfig().addBunchKeys(idBunchKeys);
-                    Configurations.save();
-                    Configurations.reload();
+                    Configurations.getInventory().addBunchKeys(idBunchKeys);
+                    Configurations.getInventory().save();
+                    Configurations.getInventory().reload();
                 }
 
                 bunchKeysMenu = new BunchKeysMenu(player, idBunchKeys);
@@ -63,7 +62,6 @@ public class BunchKeysListener implements Listener {
     @EventHandler
     public void onBunchKeysInventoryClosed(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof BunchKeysMenuHolder)
-            InventoryConfiguration.serialize(bunchKeysMenu.getIdBunchKeys(),
-                    event.getInventory());
+            Configurations.getInventory().serialize(bunchKeysMenu.getIdBunchKeys(), event.getInventory());
     }
 }

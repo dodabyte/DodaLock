@@ -14,7 +14,7 @@ gui:
   number_8: '8'
   number_9: '9'
   number_0: '0'
-  confirm: 'Подтвердить'
+  enter: 'Ввести'
   clear: 'Очистить'
   plug: ''
   success: 'Успех'

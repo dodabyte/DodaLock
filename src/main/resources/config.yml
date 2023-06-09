@@ -1,1 +1,3 @@
-language: 'en_us'
+language: en_us
+allow_clear_bunch_of_keys_inventory: true
+verification_period: 1

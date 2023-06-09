@@ -10,12 +10,13 @@ import org.example.dodalock.dodalock.DodaLockMain;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class InventoryConfiguration {
     private static File file;
-    private static FileConfiguration fileInventoryConfiguration;
+    private FileConfiguration fileInventoryConfiguration;
 
     public InventoryConfiguration() {
         file = new File(DodaLockMain.getPlugin().getDataFolder(), "inventories/data.yml");
@@ -39,19 +40,19 @@ public class InventoryConfiguration {
         getFileInventoryConfiguration().createSection("inventory");
     }
 
-    public static void serialize(String bunchKeys, Inventory inventory) {
+    public void serialize(String bunchKeys, Inventory inventory) {
         getFileInventoryConfiguration().set("inventory." + bunchKeys + ".date_last_serialize", LocalDateTime.now().toString());
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) != null) {
                 getFileInventoryConfiguration().set("inventory." + bunchKeys + ".content." + i, inventory.getItem(i));
             }
-            else getFileInventoryConfiguration().set("inventory." + bunchKeys + "." + i, null);
+            else getFileInventoryConfiguration().set("inventory." + bunchKeys + ".content." + i, null);
         }
         save();
         reload();
     }
 
-    public static void deserialize(String bunchKeys, Inventory inventory) {
+    public void deserialize(String bunchKeys, Inventory inventory) {
         for (int i = 0; i < inventory.getSize(); i++) {
             if (getFileInventoryConfiguration().contains("inventory." + bunchKeys + ".content." + i)) {
                 inventory.setItem(i, getFileInventoryConfiguration().getItemStack("inventory." +
@@ -60,7 +61,7 @@ public class InventoryConfiguration {
         }
     }
 
-    public static void save() {
+    public void save() {
         try {
             fileInventoryConfiguration.save(file);
         }
@@ -69,9 +70,55 @@ public class InventoryConfiguration {
         }
     }
 
-    public static void reload() {
+    public void reload() {
         fileInventoryConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
-    public static FileConfiguration getFileInventoryConfiguration() { return fileInventoryConfiguration; }
+    public void addBunchKeys(String bunchKeys) {
+        getFileInventoryConfiguration().createSection("inventory." + bunchKeys);
+
+        List<String> bunchKeysList = getFileInventoryConfiguration().getStringList("inventory.bunch_of_keys_list");
+        bunchKeysList.add(bunchKeys);
+        getFileInventoryConfiguration().set("inventory.bunch_of_keys_list", null);
+        getFileInventoryConfiguration().set("inventory.bunch_of_keys_list", bunchKeysList);
+    }
+
+    public void removeBunchOfKeys(String bunchKeys) {
+        getFileInventoryConfiguration().set("inventory." + bunchKeys, null);
+
+        List<String> bunchKeysList = getFileInventoryConfiguration().getStringList("inventory.bunch_of_keys_list");
+        bunchKeysList.remove(bunchKeys);
+        getFileInventoryConfiguration().set("inventory.bunch_of_keys_list", null);
+        getFileInventoryConfiguration().set("inventory.bunch_of_keys_list", bunchKeysList);
+    }
+
+    public boolean isBunchKeys(String bunchKeys) {
+        return bunchKeys != null && !bunchKeys.equals("") &&
+                getFileInventoryConfiguration().contains("inventory." + bunchKeys);
+    }
+
+    public List<ItemStack> getKeysInBunchKeys(String bunchKeys) {
+        List<ItemStack> itemStackList = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            if (getFileInventoryConfiguration().contains("inventory." + bunchKeys + ".content." + i)) {
+                itemStackList.add(getFileInventoryConfiguration().getItemStack("inventory." +
+                        bunchKeys + ".content." + i));
+            }
+        }
+        return itemStackList;
+    }
+
+    public List<String> getBunchKeys() {
+        return getFileInventoryConfiguration().getStringList("inventory.bunch_of_keys_list");
+    }
+
+    public LocalDateTime getLastDateSerialize(String bunchKeys) {
+        String stringDate = getFileInventoryConfiguration().getString("inventory." +
+                bunchKeys + ".date_last_serialize");
+        if (stringDate != null)
+            return LocalDateTime.parse(stringDate);
+        return null;
+    }
+
+    public FileConfiguration getFileInventoryConfiguration() { return fileInventoryConfiguration; }
 }

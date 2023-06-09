@@ -12,6 +12,11 @@ public class Configurations {
     private static FileConfiguration fileConfiguration;
     private static MainConfiguration CONFIG;
     private static LanguageConfiguration LANGUAGE;
+    private static InventoryConfiguration INVENTORY;
+    private static LocksConfiguration LOCKS;
+    private static final String language = "en_us";
+    private static final boolean clearBunchKeysInventory = true;
+    private static final int verificationPeriod = 3;
 
     public static void setup() {
         file = new File(DodaLockMain.getPlugin().getDataFolder(), "config.yml");
@@ -24,13 +29,16 @@ public class Configurations {
             }
             fileConfiguration = YamlConfiguration.loadConfiguration(file);
             CONFIG = new MainConfiguration(fileConfiguration);
-            getConfig().setup("en_us");
+            getConfig().setup(language, clearBunchKeysInventory, verificationPeriod);
         }
         else {
             fileConfiguration = YamlConfiguration.loadConfiguration(file);
             CONFIG = new MainConfiguration(fileConfiguration);
+            getConfig().setup(language, clearBunchKeysInventory, verificationPeriod);
         }
         LANGUAGE = new LanguageConfiguration(getConfig().getLanguage());
+        LOCKS = new LocksConfiguration();
+        INVENTORY = new InventoryConfiguration();
 
         getFileConfiguration().options().copyDefaults(true);
         save();
@@ -48,12 +56,18 @@ public class Configurations {
     public static void reload() {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
         CONFIG = new MainConfiguration(fileConfiguration);
+        getConfig().setup("en_us", true, 1);
         LANGUAGE = new LanguageConfiguration(getConfig().getLanguage());
+        LOCKS = new LocksConfiguration();
     }
 
     public static LanguageConfiguration getLanguage() { return LANGUAGE; }
 
     public static MainConfiguration getConfig() { return CONFIG; }
+
+    public static InventoryConfiguration getInventory() { return INVENTORY; }
+
+    public static LocksConfiguration getLocks() { return LOCKS; }
 
     public static FileConfiguration getFileConfiguration() { return fileConfiguration; }
 }

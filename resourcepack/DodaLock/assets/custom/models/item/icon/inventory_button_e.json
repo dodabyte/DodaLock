@@ -1,0 +1,6 @@
+{
+    "parent": "custom:item/icon/template",
+	"textures": {
+		"1": "custom:item/icon/inventory_button_e"
+	  }
+}

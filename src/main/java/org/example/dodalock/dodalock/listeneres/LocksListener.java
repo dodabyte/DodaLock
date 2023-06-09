@@ -12,8 +12,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.example.dodalock.dodalock.DodaLockMain;
 import org.example.dodalock.dodalock.gui.menu.CodeLockMenu;
@@ -36,47 +34,47 @@ public class LocksListener implements Listener {
             if (location != null) {
                 if (player.isSneaking()) {
                     // Открытие меню кодового замка при его наличии на двери
-                    if (Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location))) {
+                    if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
                         event.setCancelled(true);
                         new CodeLockMenu(player, FormattableUtils.getLocationString(location)).open();
                     }
                     // Открытие меню кодового замка при его отсутствии на двери с последующим его добавлением
-                    else if (player.getEquipment().getItemInMainHand().equals(ItemsManager.getCodeLock()) &&
-                            !Configurations.getConfig().isLock(FormattableUtils.getLocationString(location))) {
+                    else if (ItemsManager.isCodeLock(player.getEquipment().getItemInMainHand()) &&
+                            !Configurations.getLocks().isLock(FormattableUtils.getLocationString(location))) {
                         event.setCancelled(true);
                         new CodeLockMenu(player, FormattableUtils.getLocationString(location)).open();
                     }
 
                     // Клик на дверь с замком в руках при отсутствии его на двери с последующим добавлением замка
-                    if (!Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                            player.getEquipment().getItemInMainHand().equals(ItemsManager.getLock()) &&
-                            !Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location))) {
+                    if (!Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
+                            ItemsManager.isLock(player.getEquipment().getItemInMainHand()) &&
+                            !Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
                         event.setCancelled(true);
                         LockOperation.handle(player, FormattableUtils.getLocationString(location));
                     }
                     // Клик на дверь с ключом в руках при наличии замка на двери с последующим добавлением ключа
-                    else if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                            player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey())) {
+                    else if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
+                            ItemsManager.isKey(player.getEquipment().getItemInMainHand())) {
                         event.setCancelled(true);
                         LockOperation.handle(player, FormattableUtils.getLocationString(location));
                     }
                     // При попытке открыть дверь, когда замок установлен и игрок не держит ключ в руках,
                     // а также находится в приседе -> отмена открытия двери
-                    else if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location))) {
+                    else if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location))) {
                         event.setCancelled(true);
                     }
                 } else {
                     // При попытке открыть дверь, когда кодовый замок установлен и игрок не ввёл пароль -> отмена открытия двери
-                    if (Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location)) &&
-                            !Configurations.getConfig().isPlayerInCodeLock(FormattableUtils.
+                    if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location)) &&
+                            !Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.
                                     getLocationString(location), player)) {
                         event.setCancelled(true);
                     }
 
                     // При попытке открыть дверь, когда замок установлен и игрок не держит ключ от данного замка
                     // -> отмена открытия двери
-                    if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                            Configurations.getConfig().isKey(FormattableUtils.getLocationString(location)) &&
+                    if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
+                            Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
                             (player.getEquipment().getItemInMainHand().getItemMeta() != null &&
                             ((!player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
                             has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
@@ -88,8 +86,8 @@ public class LocksListener implements Listener {
                     }
                     // При попытке открыть дверь, когда замок установлен и игрок держит связку ключей, в которой нет
                     // ключа от замка -> отмена открытия двери
-                    else if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                            Configurations.getConfig().isKey(FormattableUtils.getLocationString(location)) &&
+                    else if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
+                            Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
                             player.getEquipment().getItemInMainHand().getItemMeta() != null &&
                             player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
                             has(new NamespacedKey(DodaLockMain.getPlugin(), "bunch_keys"), PersistentDataType.STRING) &&
@@ -100,8 +98,8 @@ public class LocksListener implements Listener {
                     }
                 }
             }
-            Configurations.save();
-            Configurations.reload();
+            Configurations.getLocks().save();
+            Configurations.getLocks().reload();
         }
         else if (event.getClickedBlock() != null && event.getAction() == Action.LEFT_CLICK_BLOCK &&
                 WorldUtils.isTrueTypes(event.getClickedBlock())) {
@@ -109,28 +107,22 @@ public class LocksListener implements Listener {
             if (location != null) {
                 if (player.isSneaking()) {
                     // Удаление игрока из памяти кодового замка
-                    if (Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location))) {
-                        Configurations.getConfig().removeCodeLock(FormattableUtils.getLocationString(location));
-                        Configurations.getConfig().removeCodeLockFromList(FormattableUtils.getLocationString(location));
-                        location.getWorld().dropItem(location, ItemsManager.getCodeLock());
-                        Configurations.save();
-                        Configurations.reload();
+                    if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
+                        Configurations.getLocks().removeCodeLock(FormattableUtils.getLocationString(location));
+                        location.getWorld().dropItem(location, ItemsManager.getCodeLock().getItemStack());
                     }
 
                     // Удаление замка из конфига
-                    if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location)) &&
-                            Configurations.getConfig().isKey(FormattableUtils.getLocationString(location)) &&
-                            player.getEquipment().getItemInMainHand().equals(ItemsManager.getKey())) {
-                        Configurations.getConfig().removeLock(FormattableUtils.getLocationString(location));
-                        Configurations.getConfig().removeLockFromList(FormattableUtils.getLocationString(location));
-                        location.getWorld().dropItem(location, ItemsManager.getLock());
-                        Configurations.save();
-                        Configurations.reload();
+                    if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
+                            Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
+                            ItemsManager.isKey(player.getEquipment().getItemInMainHand())) {
+                        Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
+                        location.getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
                     }
                 }
             }
-            Configurations.save();
-            Configurations.reload();
+            Configurations.getLocks().save();
+            Configurations.getLocks().reload();
         }
     }
 
@@ -140,22 +132,18 @@ public class LocksListener implements Listener {
             Location location = getLocation(event.getBlock(), event.getPlayer());
 
             if (location != null) {
-                if (Configurations.getConfig().isCodeLock(FormattableUtils.getLocationString(location))) {
-                    Configurations.getConfig().removeCodeLock(FormattableUtils.getLocationString(location));
-                    Configurations.getConfig().removeCodeLockFromList(FormattableUtils.getLocationString(location));
-                    event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getCodeLock());
-                    Configurations.save();
-                    Configurations.reload();
+                if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
+                    Configurations.getLocks().removeCodeLock(FormattableUtils.getLocationString(location));
+                    event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getCodeLock().getItemStack());
                 }
 
-                if (Configurations.getConfig().isLock(FormattableUtils.getLocationString(location))) {
-                    Configurations.getConfig().removeLock(FormattableUtils.getLocationString(location));
-                    Configurations.getConfig().removeLockFromList(FormattableUtils.getLocationString(location));
-                    event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getLock());
-                    Configurations.save();
-                    Configurations.reload();
+                if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location))) {
+                    Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
+                    event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
                 }
             }
+            Configurations.getLocks().save();
+            Configurations.getLocks().reload();
         }
     }
 
@@ -191,8 +179,8 @@ public class LocksListener implements Listener {
         boolean isTrueKeysInBunch = false;
 
         if (idBunchKeys != null && !idBunchKeys.equals("") &&
-                Configurations.getConfig().isBunchKeys(idBunchKeys)) {
-            for (ItemStack item : Configurations.getConfig().getKeysInBunchKeys(idBunchKeys)) {
+                Configurations.getInventory().isBunchKeys(idBunchKeys)) {
+            for (ItemStack item : Configurations.getInventory().getKeysInBunchKeys(idBunchKeys)) {
                 if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
                         has(new NamespacedKey(DodaLockMain.getPlugin(),
                         FormattableUtils.getLocationString(location)),

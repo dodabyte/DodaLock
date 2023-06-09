@@ -12,12 +12,6 @@ import org.example.dodalock.dodalock.logic.CheckPlayersAttempts;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class CodeLockMenu extends CodeLockMenuHolder {
-    private final ItemStack EMPTY_FIELD = makeItem(Material.WHITE_STAINED_GLASS_PANE,
-            Configurations.getLanguage().translate("gui.plug"));
-    private final ItemStack CONFIRM_BUTTON = makeItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN +
-            Configurations.getLanguage().translate("gui.confirm"));
-    private final ItemStack CLEAR_BUTTON = makeItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED +
-            Configurations.getLanguage().translate("gui.clear"));
     private final String location;
     private String password = "";
 
@@ -28,6 +22,9 @@ public class CodeLockMenu extends CodeLockMenuHolder {
 
     @Override
     public String getMenuName() {
+        if (Configurations.getLocks().isCodeLock(location) &&
+                Configurations.getLocks().isPlayerInCodeLock(location, player))
+            return "Change a Code";
         return "Enter a Code";
     }
 
@@ -44,30 +41,30 @@ public class CodeLockMenu extends CodeLockMenuHolder {
             if (clickedItem != null && clickedItem.getItemMeta() != null &&
                 clickedItem.getItemMeta().getDisplayName() != null) {
                     if (isCodeLockButtons(clickedItem)) {
-                        if (inventory.getItem(16).equals(EMPTY_FIELD)) {
-                            inventory.setItem(16, clickedItem);
+                        if (isEmptyField(inventory.getItem(16))) {
+                            inventory.setItem(16, getFieldFromButton(clickedItem));
                             password += clickedItem.getItemMeta().getDisplayName();
                         }
-                        else if (inventory.getItem(25).equals(EMPTY_FIELD)) {
-                            inventory.setItem(25, clickedItem);
+                        else if (isEmptyField(inventory.getItem(25))) {
+                            inventory.setItem(25, getFieldFromButton(clickedItem));
                             password += clickedItem.getItemMeta().getDisplayName();
                         }
-                        else if (inventory.getItem(34).equals(EMPTY_FIELD)) {
-                            inventory.setItem(34, clickedItem);
+                        else if (isEmptyField(inventory.getItem(34))) {
+                            inventory.setItem(34, getFieldFromButton(clickedItem));
                             password += clickedItem.getItemMeta().getDisplayName();
                         }
-                        else if (inventory.getItem(43).equals(EMPTY_FIELD)) {
-                            inventory.setItem(43, clickedItem);
+                        else if (isEmptyField(inventory.getItem(43))) {
+                            inventory.setItem(43, getFieldFromButton(clickedItem));
                             password += clickedItem.getItemMeta().getDisplayName();
                         }
                     }
                     else if (isOptionsButtons(clickedItem)) {
-                        if (clickedItem.equals(CONFIRM_BUTTON)) {
-                            if (!inventory.getItem(43).equals(EMPTY_FIELD)) {
+                        if (isEnterButton(clickedItem)) {
+                            if (!isEmptyField(inventory.getItem(43))) {
                                 // Кодовый замок отсутствует на двери -> добавление замка, пароля и игрока в конфиг
-                                if (!Configurations.getConfig().isCodeLock(location)) {
-                                    Configurations.getConfig().addCodeLock(password, player, location);
-                                    if (player.getEquipment().getItemInMainHand().equals(ItemsManager.getCodeLock()) &&
+                                if (!Configurations.getLocks().isCodeLock(location)) {
+                                    Configurations.getLocks().addCodeLock(password, player, location);
+                                    if (ItemsManager.isCodeLock(player.getEquipment().getItemInMainHand()) &&
                                         player.getEquipment().getItemInMainHand().getAmount() > 0) {
                                             player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()
                                                     .getItemInMainHand().getAmount() - 1);
@@ -78,17 +75,17 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                 }
                                 // Кодовый замок имеется на двери, но игрок ни разу не открывал дверь, при этом
                                 // он правильно ввёл пароль -> добавление игрока в конфиг
-                                else if (Configurations.getConfig().isCodeLock(location) &&
-                                    !Configurations.getConfig().isPlayerInCodeLock(location, player) &&
-                                    Configurations.getConfig().isTruePassword(location, password)) {
-                                        Configurations.getConfig().addPlayerInCodeLockData(location, player);
+                                else if (Configurations.getLocks().isCodeLock(location) &&
+                                    !Configurations.getLocks().isPlayerInCodeLock(location, player) &&
+                                    Configurations.getLocks().isTruePassword(location, password)) {
+                                        Configurations.getLocks().addPlayerInCodeLockData(location, player);
                                         player.closeInventory();
                                 }
                                 // Кодовый замок имеется на двери, но игрок ни разу не открывал дверь, при этом
                                 // он НЕправильно ввёл пароль -> проверка кол-ва попыток открытия двери (при 3 наносится урон)
-                                else if (Configurations.getConfig().isCodeLock(location) &&
-                                    !Configurations.getConfig().isPlayerInCodeLock(location, player) &&
-                                    !Configurations.getConfig().isTruePassword(location, password)) {
+                                else if (Configurations.getLocks().isCodeLock(location) &&
+                                    !Configurations.getLocks().isPlayerInCodeLock(location, player) &&
+                                    !Configurations.getLocks().isTruePassword(location, password)) {
                                         CheckPlayersAttempts.addAttempt(location, player);
                                         if (CheckPlayersAttempts.getAttempts(location, player) >= 3) {
                                             CheckPlayersAttempts.removeAttempts(location, player);
@@ -99,28 +96,28 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                 }
                                 // Кодовый замок имеется на двери, игрок уже открывал дверь, при этом
                                 // пароль введён неправильно -> смена пароля для указанного замка
-                                else if (Configurations.getConfig().isCodeLock(location) &&
-                                    Configurations.getConfig().isPlayerInCodeLock(location, player) &&
-                                    !Configurations.getConfig().isTruePassword(location, password)) {
-                                        Configurations.getConfig().changePassword(location, password);
+                                else if (Configurations.getLocks().isCodeLock(location) &&
+                                    Configurations.getLocks().isPlayerInCodeLock(location, player) &&
+                                    !Configurations.getLocks().isTruePassword(location, password)) {
+                                        Configurations.getLocks().changePassword(location, password);
                                         player.closeInventory();
                                 }
-                                inventory.setItem(16, EMPTY_FIELD);
-                                inventory.setItem(25, EMPTY_FIELD);
-                                inventory.setItem(34, EMPTY_FIELD);
-                                inventory.setItem(43, EMPTY_FIELD);
+                                inventory.setItem(16, GuiItemsManager.getInventoryField().getItemStack());
+                                inventory.setItem(25, GuiItemsManager.getInventoryField().getItemStack());
+                                inventory.setItem(34, GuiItemsManager.getInventoryField().getItemStack());
+                                inventory.setItem(43, GuiItemsManager.getInventoryField().getItemStack());
                                 password = "";
                             }
                         }
-                        else if (clickedItem.equals(CLEAR_BUTTON)) {
-                            inventory.setItem(16, EMPTY_FIELD);
-                            inventory.setItem(25, EMPTY_FIELD);
-                            inventory.setItem(34, EMPTY_FIELD);
-                            inventory.setItem(43, EMPTY_FIELD);
+                        else if (isClearButton(clickedItem)) {
+                            inventory.setItem(16, GuiItemsManager.getInventoryField().getItemStack());
+                            inventory.setItem(25, GuiItemsManager.getInventoryField().getItemStack());
+                            inventory.setItem(34, GuiItemsManager.getInventoryField().getItemStack());
+                            inventory.setItem(43, GuiItemsManager.getInventoryField().getItemStack());
                             password = "";
                         }
-                        Configurations.save();
-                        Configurations.reload();
+                        Configurations.getLocks().save();
+                        Configurations.getLocks().reload();
                     }
             }
         }
@@ -129,60 +126,102 @@ public class CodeLockMenu extends CodeLockMenuHolder {
     @Override
     public void setMenuItems() {
         // CodeLock buttons
-        inventory.setItem(10, makeItem(Material.GRAY_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_1")));
-        inventory.setItem(11, makeItem(Material.BROWN_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_2")));
-        inventory.setItem(12, makeItem(Material.ORANGE_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_3")));
-        inventory.setItem(19, makeItem(Material.YELLOW_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_4")));
-        inventory.setItem(20, makeItem(Material.GREEN_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_5")));
-        inventory.setItem(21, makeItem(Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_6")));
-        inventory.setItem(28, makeItem(Material.CYAN_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_7")));
-        inventory.setItem(29, makeItem(Material.BLUE_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_8")));
-        inventory.setItem(30, makeItem(Material.MAGENTA_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_9")));
-        inventory.setItem(38, makeItem(Material.PINK_STAINED_GLASS_PANE,
-                Configurations.getLanguage().translate("gui.number_0")));
+        inventory.setItem(10, GuiItemsManager.getInventoryButton1().getItemStack());
+        inventory.setItem(11, GuiItemsManager.getInventoryButton2().getItemStack());
+        inventory.setItem(12, GuiItemsManager.getInventoryButton3().getItemStack());
+        inventory.setItem(13, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(19, GuiItemsManager.getInventoryButton4().getItemStack());
+        inventory.setItem(20, GuiItemsManager.getInventoryButton5().getItemStack());
+        inventory.setItem(21, GuiItemsManager.getInventoryButton6().getItemStack());
+        inventory.setItem(22, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(28, GuiItemsManager.getInventoryButton7().getItemStack());
+        inventory.setItem(29, GuiItemsManager.getInventoryButton8().getItemStack());
+        inventory.setItem(30, GuiItemsManager.getInventoryButton9().getItemStack());
+        inventory.setItem(31, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(37, GuiItemsManager.getInventoryPartWithBorderUp().getItemStack());
+        inventory.setItem(38, GuiItemsManager.getInventoryButton0().getItemStack());
+        inventory.setItem(39, GuiItemsManager.getInventoryPartWithBorderLeftUp().getItemStack());
+        inventory.setItem(40, GuiItemsManager.getInventoryPartWithBorderDotLeftUp().getItemStack());
+        inventory.setItem(47, GuiItemsManager.getInventoryPartWithBorderUp().getItemStack());
 
         // Confirm and Clear buttons
-        inventory.setItem(23, CONFIRM_BUTTON);
-        inventory.setItem(32, CLEAR_BUTTON);
+        inventory.setItem(23, GuiItemsManager.getInventoryButtonE().getItemStack());
+        inventory.setItem(24, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(32, GuiItemsManager.getInventoryButtonC().getItemStack());
+        inventory.setItem(33, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(41, GuiItemsManager.getInventoryPartWithBorderUp().getItemStack());
+        inventory.setItem(42, GuiItemsManager.getInventoryPartWithBorderDotLeftUp().getItemStack());
 
         // Enter code field
-        inventory.setItem(16, EMPTY_FIELD);
-        inventory.setItem(25, EMPTY_FIELD);
-        inventory.setItem(34, EMPTY_FIELD);
-        inventory.setItem(43, EMPTY_FIELD);
+        inventory.setItem(16, GuiItemsManager.getInventoryField().getItemStack());
+        inventory.setItem(17, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(25, GuiItemsManager.getInventoryField().getItemStack());
+        inventory.setItem(26, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(34, GuiItemsManager.getInventoryField().getItemStack());
+        inventory.setItem(35, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(43, GuiItemsManager.getInventoryField().getItemStack());
+        inventory.setItem(44, GuiItemsManager.getInventoryPartWithBorderLeft().getItemStack());
+        inventory.setItem(52, GuiItemsManager.getInventoryPartWithBorderUp().getItemStack());
+        inventory.setItem(53, GuiItemsManager.getInventoryPartWithBorderDotLeftUp().getItemStack());
 
         // Inventory parts
         for (int i = 0; i < inventory.getSize(); i++) {
             if (inventory.getItem(i) == null) {
-                inventory.setItem(i, GuiItemsManager.getInventoryPart());
+                inventory.setItem(i, GuiItemsManager.getInventoryPart().getItemStack());
             }
         }
     }
 
-    public boolean isCodeLockButtons(ItemStack item) {
-        return item.getType().equals(Material.GRAY_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.BROWN_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.ORANGE_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.YELLOW_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.GREEN_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.LIGHT_BLUE_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.CYAN_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.BLUE_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.MAGENTA_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.PINK_STAINED_GLASS_PANE);
+    private boolean isCodeLockButtons(ItemStack item) {
+        return item.equals(GuiItemsManager.getInventoryButton0().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton1().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton2().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton3().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton4().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton5().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton6().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton7().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton8().getItemStack()) ||
+                item.equals(GuiItemsManager.getInventoryButton9().getItemStack());
+    }
+
+    private ItemStack getFieldFromButton(ItemStack item) {
+        if (item.equals(GuiItemsManager.getInventoryButton0().getItemStack()))
+            return GuiItemsManager.getInventoryField0().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton1().getItemStack()))
+            return GuiItemsManager.getInventoryField1().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton2().getItemStack()))
+            return GuiItemsManager.getInventoryField2().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton3().getItemStack()))
+            return GuiItemsManager.getInventoryField3().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton4().getItemStack()))
+            return GuiItemsManager.getInventoryField4().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton5().getItemStack()))
+            return GuiItemsManager.getInventoryField5().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton6().getItemStack()))
+            return GuiItemsManager.getInventoryField6().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton7().getItemStack()))
+            return GuiItemsManager.getInventoryField7().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton8().getItemStack()))
+            return GuiItemsManager.getInventoryField8().getItemStack();
+        else if (item.equals(GuiItemsManager.getInventoryButton9().getItemStack()))
+            return GuiItemsManager.getInventoryField9().getItemStack();
+        return GuiItemsManager.getInventoryField().getItemStack();
+    }
+
+    private boolean isClearButton(ItemStack item) {
+        return item.equals(GuiItemsManager.getInventoryButtonC().getItemStack());
+    }
+
+    private boolean isEnterButton(ItemStack item) {
+        return item.equals(GuiItemsManager.getInventoryButtonE().getItemStack());
     }
 
     private boolean isOptionsButtons(ItemStack item) {
-        return item.getType().equals(Material.LIME_STAINED_GLASS_PANE) ||
-                item.getType().equals(Material.RED_STAINED_GLASS_PANE);
+        return isEnterButton(item) || isClearButton(item);
+    }
+
+    private boolean isEmptyField(ItemStack item) {
+        return item.equals(GuiItemsManager.getInventoryField().getItemStack());
     }
 }

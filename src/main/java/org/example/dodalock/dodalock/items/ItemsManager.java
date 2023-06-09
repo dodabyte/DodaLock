@@ -1,37 +1,39 @@
 package org.example.dodalock.dodalock.items;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class ItemsManager {
-    private static ItemStack codeLock;
-    private static ItemStack lock;
-    private static ItemStack key;
-    private static ItemStack bunchKeys;
+    private static final Material materialLocks = Material.BOOK;
+    private static final Material materialKeys = Material.ENCHANTED_BOOK;
+
+    private static CustomItem codeLock;
+    private static CustomItem lock;
+    private static CustomItem key;
+    private static CustomItem bunchKeys;
 
     public static void initializeItems() {
-        createCodeLock();
-        createLock();
-        createKey();
-        createBunchKeys();
+        codeLock = new CustomItem(materialLocks, 1, Configurations.getLanguage().translate("items_name.code_lock"));
+        lock = new CustomItem(materialLocks, 2, Configurations.getLanguage().translate("items_name.lock"));
+        key = new CustomItem(materialKeys, 1, Configurations.getLanguage().translate("items_name.key"));
+        bunchKeys = new CustomItem(materialKeys, 2, Configurations.getLanguage().translate("items_name.bunch_keys"));
+
+        createRecipes();
     }
 
-    private static void createCodeLock() {
-        codeLock = new ItemStack(Material.BOOK);
-        ItemMeta itemMeta = codeLock.getItemMeta();
-        itemMeta.setCustomModelData(1);
-        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate("items_name.code_lock"));
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        codeLock.setItemMeta(itemMeta);
+    private static void createRecipes() {
+        createCodeLockRecipe();
+        createLockRecipe();
+        createKeyRecipe();
+        createBunchKeysRecipe();
+    }
 
-        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("code_lock"), codeLock);
+    private static void createCodeLockRecipe() {
+        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("code_lock"), codeLock.getItemStack());
         recipe.shape("$$$", "&*%", "$$$");
         recipe.setIngredient('$', Material.IRON_INGOT);
         recipe.setIngredient('*', Material.REDSTONE_BLOCK);
@@ -40,56 +42,55 @@ public class ItemsManager {
         Bukkit.addRecipe(recipe);
     }
 
-    private static void createLock() {
-        lock = new ItemStack(Material.BOOK);
-        ItemMeta itemMeta = lock.getItemMeta();
-        itemMeta.setCustomModelData(2);
-        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate("items_name.lock"));
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        lock.setItemMeta(itemMeta);
-
-        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("lock"), lock);
+    private static void createLockRecipe() {
+        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("lock"), lock.getItemStack());
         recipe.shape("%%", "%%");
         recipe.setIngredient('%', Material.IRON_INGOT);
         Bukkit.addRecipe(recipe);
     }
 
-    private static void createKey() {
-        key = new ItemStack(Material.BOOK);
-        ItemMeta itemMeta = key.getItemMeta();
-        itemMeta.setCustomModelData(3);
-        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate("items_name.key"));
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        key.setItemMeta(itemMeta);
-
-        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("key"), key);
+    private static void createKeyRecipe() {
+        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("key"), key.getItemStack());
         recipe.shape("%", "$");
         recipe.setIngredient('%', Material.IRON_INGOT);
         recipe.setIngredient('$', Material.LEVER);
         Bukkit.addRecipe(recipe);
     }
 
-    private static void createBunchKeys() {
-        bunchKeys = new ItemStack(Material.BOOK);
-        ItemMeta itemMeta = bunchKeys.getItemMeta();
-        itemMeta.setCustomModelData(4);
-        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate("items_name.bunch_keys"));
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        bunchKeys.setItemMeta(itemMeta);
-
-        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("bunch_of_keys"), bunchKeys);
+    private static void createBunchKeysRecipe() {
+        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("bunch_of_keys"), bunchKeys.getItemStack());
         recipe.shape(" $ ", "$%$", " $ ");
         recipe.setIngredient('%', Material.IRON_INGOT);
         recipe.setIngredient('$', Material.STRING);
         Bukkit.addRecipe(recipe);
     }
 
+    public static CustomItem getCodeLock() { return codeLock; }
 
-    public static ItemStack getCodeLock() { return codeLock; }
+    public static CustomItem getLock() { return lock; }
 
-    public static ItemStack getLock() { return lock; }
+    public static CustomItem getKey() { return key; }
 
-    public static ItemStack getKey() { return key; }
+    public static CustomItem getBunchKeys() { return bunchKeys; }
 
-    public static ItemStack getBunchKeys() { return bunchKeys; }
+    public static boolean isCodeLock(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().equals(getCodeLock().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getCodeLock().getItemStack().getItemMeta());
+    }
+
+    public static boolean isLock(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().equals(getLock().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getLock().getItemStack().getItemMeta());
+    }
+
+
+    public static boolean isKey(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().equals(getKey().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getKey().getItemStack().getItemMeta());
+    }
+
+    public static boolean isBunchKeys(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().equals(getBunchKeys().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getBunchKeys().getItemStack().getItemMeta());
+    }
 }

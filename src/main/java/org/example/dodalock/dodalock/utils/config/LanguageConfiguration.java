@@ -1,19 +1,19 @@
 package org.example.dodalock.dodalock.utils.config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.DodaLockMain;
 import org.example.dodalock.dodalock.items.ItemsManager;
-import org.example.dodalock.dodalock.utils.FormattableUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class LanguageConfiguration {
     private FileConfiguration fileLanguageConfiguration;
@@ -40,10 +40,10 @@ public class LanguageConfiguration {
     }
 
     public void checkItemsLocalization(Player player) {
-        if (player.getInventory().contains(ItemsManager.getCodeLock()) ||
-                player.getInventory().contains(ItemsManager.getLock()) ||
-                player.getInventory().contains(ItemsManager.getKey()) ||
-                player.getInventory().contains(ItemsManager.getBunchKeys())) {
+        if (player.getInventory().contains(ItemsManager.getCodeLock().getItemStack()) ||
+                player.getInventory().contains(ItemsManager.getLock().getItemStack()) ||
+                player.getInventory().contains(ItemsManager.getKey().getItemStack()) ||
+                player.getInventory().contains(ItemsManager.getBunchKeys().getItemStack())) {
             for (int i = 0; i < player.getInventory().getSize(); i++) {
                 if (player.getInventory().getItem(i) != null &&
                         player.getInventory().getItem(i).equals(ItemsManager.getCodeLock())) {
