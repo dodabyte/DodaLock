@@ -2,6 +2,7 @@ package org.example.dodalock.dodalock.items;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,7 +15,8 @@ public class CustomItem {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setCustomModelData(customModelData);
         itemMeta.setDisplayName(ChatColor.RESET + displayName);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        itemMeta.setUnbreakable(true);
+        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_UNBREAKABLE);
         itemStack.setItemMeta(itemMeta);
     }
 

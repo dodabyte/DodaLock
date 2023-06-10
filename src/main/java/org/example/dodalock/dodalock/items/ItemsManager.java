@@ -8,8 +8,8 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class ItemsManager {
-    private static final Material materialLocks = Material.BOOK;
-    private static final Material materialKeys = Material.ENCHANTED_BOOK;
+    private static final Material material = Material.BOOK;
+    private static final Material materialBunchKeys = Material.WOODEN_HOE;
 
     private static CustomItem codeLock;
     private static CustomItem lock;
@@ -17,10 +17,10 @@ public class ItemsManager {
     private static CustomItem bunchKeys;
 
     public static void initializeItems() {
-        codeLock = new CustomItem(materialLocks, 1, Configurations.getLanguage().translate("items_name.code_lock"));
-        lock = new CustomItem(materialLocks, 2, Configurations.getLanguage().translate("items_name.lock"));
-        key = new CustomItem(materialKeys, 1, Configurations.getLanguage().translate("items_name.key"));
-        bunchKeys = new CustomItem(materialKeys, 2, Configurations.getLanguage().translate("items_name.bunch_keys"));
+        codeLock = new CustomItem(material, 1, Configurations.getLanguage().translate("items_name.code_lock"));
+        lock = new CustomItem(material, 2, Configurations.getLanguage().translate("items_name.lock"));
+        key = new CustomItem(material, 3, Configurations.getLanguage().translate("items_name.key"));
+        bunchKeys = new CustomItem(materialBunchKeys, 1, Configurations.getLanguage().translate("items_name.bunch_keys"));
 
         createRecipes();
     }

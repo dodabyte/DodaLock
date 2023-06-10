@@ -1,5 +1,37 @@
 # Changelog
 
+## v1.0 - 10.06.2023
+
+_Basic and important corrections, as well as improvements._
+
+### Added
+
+- _In the getLocations method, when getting the coordinates of 
+the lower part of the door, a check is added to ensure that 
+the click occurs on the same door._
+- _Checking for the uniqueness of the identifiers of keys 
+and a bunch of keys._
+- _Texts of the results of performing any actions 
+(for example, errors when trying to open a closed door, etc)._
+
+### Changed
+
+- _The material of the key is now a book, and the material of 
+the bunch of keys is a wooden hoe._
+- _The maximum stack of the slot in the keychain inventory is 
+now equal to 1._
+- _Instead of the usual variable with the bunch of keys menu, a 
+Map has been added, which stores the bunch of keys menu by the 
+Player key. This is necessary so that there are no problems 
+with the operation of several menus for different players._
+
+### Fixed
+
+- _Italic display names of items after localization._
+- _Transfer items from hotbar to an empty bunch of keys 
+inventory slot._
+- _Double call Listener at the PlayerInteractEvent event._
+
 ## v1.0 - 07.06.2023 - 09.06.2023
 
 _The third changelog entry._

@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.example.dodalock.dodalock.DodaLockMain;
 import org.example.dodalock.dodalock.items.ItemsManager;
+import org.example.dodalock.dodalock.utils.ChatUtils;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
@@ -23,6 +24,7 @@ public class LockOperation {
                     player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()
                             .getItemInMainHand().getAmount() - 1);
                     player.updateInventory();
+                    ChatUtils.printMessage(player, "success.installing_lock");
                 }
             }
             // Замок имеется на двери, при этом у игрока в руках ключ или связка ключей,
@@ -31,6 +33,9 @@ public class LockOperation {
                     ItemsManager.isKey(player.getEquipment().getItemInMainHand()) &&
                     (!Configurations.getLocks().isKey(location))) {
                 UUID uuid = UUID.randomUUID();
+                while (!Configurations.getLocks().isUniqueUuidKey(FormattableUtils.getUuidString(uuid)))
+                    uuid = UUID.randomUUID();
+
                 ItemStack item = ItemsManager.getKey().getItemStack().clone();
                 ItemMeta itemMeta = item.getItemMeta();
                 NamespacedKey key = new NamespacedKey(DodaLockMain.getPlugin(), location);
@@ -42,6 +47,7 @@ public class LockOperation {
                 player.getInventory().addItem(item);
                 player.updateInventory();
                 Configurations.getLocks().changeKey(location, FormattableUtils.getUuidString(uuid));
+                ChatUtils.printMessage(player, "success.create_key");
             }
         }
         Configurations.getLocks().save();

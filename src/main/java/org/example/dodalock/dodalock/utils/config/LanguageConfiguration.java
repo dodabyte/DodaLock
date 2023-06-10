@@ -1,5 +1,6 @@
 package org.example.dodalock.dodalock.utils.config;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -48,25 +49,25 @@ public class LanguageConfiguration {
                 if (player.getInventory().getItem(i) != null &&
                         player.getInventory().getItem(i).equals(ItemsManager.getCodeLock())) {
                     ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(translate("items_name.code_lock"));
+                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.code_lock"));
                     player.getInventory().getItem(i).setItemMeta(itemMeta);
                 }
                 else if (player.getInventory().getItem(i) != null &&
                         player.getInventory().getItem(i).equals(ItemsManager.getLock())) {
                     ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(translate("items_name.lock"));
+                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.lock"));
                     player.getInventory().getItem(i).setItemMeta(itemMeta);
                 }
                 else if (player.getInventory().getItem(i) != null &&
                         player.getInventory().getItem(i).equals(ItemsManager.getKey())) {
                     ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(translate("items_name.key"));
+                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.key"));
                     player.getInventory().getItem(i).setItemMeta(itemMeta);
                 }
                 else if (player.getInventory().getItem(i) != null &&
                         player.getInventory().getItem(i).equals(ItemsManager.getBunchKeys())) {
                     ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(translate("items_name.bunch_keys"));
+                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.bunch_keys"));
                     player.getInventory().getItem(i).setItemMeta(itemMeta);
                 }
             }

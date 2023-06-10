@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/wooden_hoe"
+  },
+  "overrides": [
+    {"predicate": { "custom_model_data": 1}, "model": "custom:item/bunch_of_keys"}
+  ]
+}

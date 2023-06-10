@@ -153,6 +153,18 @@ public class LocksConfiguration {
         return isLock(location) && getKey(location) != null && !getKey(location).equals("");
     }
 
+    public boolean isUniqueUuidKey(String key) {
+        boolean isUniqueUuid = true;
+        List<String> locationsList = getLockData();
+        for (String location : locationsList) {
+            if (getKey(location).equals(key)) {
+                isUniqueUuid = false;
+                break;
+            }
+        }
+        return isUniqueUuid;
+    }
+
     public List<String> getCodeLockData() {
         return getFileLocksConfiguration().getStringList("data.code_locks_list");
     }

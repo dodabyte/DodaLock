@@ -27,10 +27,13 @@ public abstract class BunchKeysMenuHolder implements InventoryHolder {
 
     public abstract int getSlots();
 
+    public abstract int getMaxStackSize();
+
     public abstract void handleMenu(InventoryClickEvent event);
 
     public void open() {
         inventory = Bukkit.createInventory(this, getSlots(), getMenuName());
+        inventory.setMaxStackSize(getMaxStackSize());
         Configurations.getInventory().deserialize(getIdBunchKeys(), inventory);
         getPlayer().openInventory(inventory);
     }

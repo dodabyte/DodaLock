@@ -9,6 +9,7 @@ import org.example.dodalock.dodalock.gui.GuiItemsManager;
 import org.example.dodalock.dodalock.gui.holders.CodeLockMenuHolder;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.logic.CheckPlayersAttempts;
+import org.example.dodalock.dodalock.utils.ChatUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class CodeLockMenu extends CodeLockMenuHolder {
@@ -72,6 +73,7 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                     }
                                     password = "";
                                     player.closeInventory();
+                                    ChatUtils.printMessage(player, "success.installing_code_lock");
                                 }
                                 // Кодовый замок имеется на двери, но игрок ни разу не открывал дверь, при этом
                                 // он правильно ввёл пароль -> добавление игрока в конфиг
@@ -80,6 +82,7 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                     Configurations.getLocks().isTruePassword(location, password)) {
                                         Configurations.getLocks().addPlayerInCodeLockData(location, player);
                                         player.closeInventory();
+                                        ChatUtils.printMessage(player, "success.add_player_in_code_lock");
                                 }
                                 // Кодовый замок имеется на двери, но игрок ни разу не открывал дверь, при этом
                                 // он НЕправильно ввёл пароль -> проверка кол-ва попыток открытия двери (при 3 наносится урон)
@@ -92,7 +95,9 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                             CheckPlayersAttempts.removeLocation(location);
                                             player.closeInventory();
                                             player.damage(6);
+                                            ChatUtils.printMessage(player, "error.damage_for_exceeding_attempts");
                                         }
+                                        else ChatUtils.printMessage(player, "error.invalid_password_with_attempts");
                                 }
                                 // Кодовый замок имеется на двери, игрок уже открывал дверь, при этом
                                 // пароль введён неправильно -> смена пароля для указанного замка
@@ -101,6 +106,7 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                     !Configurations.getLocks().isTruePassword(location, password)) {
                                         Configurations.getLocks().changePassword(location, password);
                                         player.closeInventory();
+                                        ChatUtils.printMessage(player, "success.change_password_code_lock");
                                 }
                                 inventory.setItem(16, GuiItemsManager.getInventoryField().getItemStack());
                                 inventory.setItem(25, GuiItemsManager.getInventoryField().getItemStack());

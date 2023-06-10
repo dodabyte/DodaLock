@@ -12,6 +12,7 @@ Spigot plugin adds locks and code locks for doors, trapdoors, barrels and chests
   their own craft.
 * Compatible with the new blocks of Minecraft version 1.19.4
   (even cherry wood).
+* There is localization into english and russian languages.
 * Open-source (GNU GPL v3 license).
 
 ## How to use it?

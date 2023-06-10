@@ -5,6 +5,7 @@
   },
   "overrides": [
     {"predicate": { "custom_model_data": 1}, "model": "custom:item/code_lock"},
-    {"predicate": { "custom_model_data": 2}, "model": "custom:item/lock"}
+    {"predicate": { "custom_model_data": 2}, "model": "custom:item/lock"},
+    {"predicate": { "custom_model_data": 3}, "model": "custom:item/key"}
   ]
 }

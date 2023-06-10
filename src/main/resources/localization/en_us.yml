@@ -25,17 +25,24 @@ help:
 list:
   code_locks_list: 'DodaLock code locks List'
   locks_list: 'DodaLock locks List'
-errors:
-  open_with_code_lock: 'You cannot open this object. Enter the password in the code lock.'
-  open_with_lock: 'You cannot open this object. Use a key that fits this lock.'
+error:
+  open_object_with_code_lock: 'You cannot open this object because a combination lock is installed. Enter the password in the combination lock.'
+  open_object_with_lock: 'You cannot open this object because the lock is installed. Use the key that fits this lock.'
   installing_lock_with_code_lock: 'You cannot install a lock, because a code lock is already installed on this object.'
   installing_lock_with_lock: 'You cannot install a lock, because a lock is already installed on this object.'
   installing_code_lock_with_code_lock: 'You cannot install a code lock, because a code lock is already installed on this object.'
   installing_code_lock_with_lock: 'You cannot install a code lock, because a lock is already installed on this object.'
+  invalid_password_with_attempts: 'The password was entered incorrectly. Try again. Number of attempts before taking damage: '
+  damage_for_exceeding_attempts: 'Oops, it seems you have exceeded the number of attempts for an incorrectly typed password.'
+  invalid_password: 'The password was entered incorrectly. Try again.'
 success:
   reloaded: 'The plugin config has been successfully reloaded.'
   installing_lock: 'The lock has been successfully installed.'
   installing_code_lock: 'The code lock has been successfully installed.'
+  remove_lock: 'The lock has been successfully removed.'
+  remove_code_lock: 'The combination lock has been successfully removed.'
+  create_key: 'The key to this lock has been successfully created.'
+  add_player_in_code_lock: 'You entered the correct password. Now your identity is stored in the devices memory.'
   change_password_code_lock: 'The password of the code lock has been successfully changed.'
   remove_locks: 'All locks have been successfully removed.'
   remove_code_locks: 'All code locks have been successfully removed.'

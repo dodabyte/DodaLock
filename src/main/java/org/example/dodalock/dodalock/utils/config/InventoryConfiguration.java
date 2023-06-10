@@ -1,17 +1,18 @@
 package org.example.dodalock.dodalock.utils.config;
 
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.example.dodalock.dodalock.DodaLockMain;
+import org.example.dodalock.dodalock.utils.FormattableUtils;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class InventoryConfiguration {
@@ -108,7 +109,36 @@ public class InventoryConfiguration {
         return itemStackList;
     }
 
-    public List<String> getBunchKeys() {
+    public boolean checkDoorWithBunchKeys(Location location, String idBunchKeys) {
+        boolean isTrueKeysInBunch = false;
+
+        if (idBunchKeys != null && !idBunchKeys.equals("") && isBunchKeys(idBunchKeys)) {
+            for (ItemStack item : getKeysInBunchKeys(idBunchKeys)) {
+                if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
+                        has(new NamespacedKey(DodaLockMain.getPlugin(),
+                        FormattableUtils.getLocationString(location)),
+                        PersistentDataType.STRING)) {
+                    isTrueKeysInBunch = true;
+                    break;
+                }
+            }
+        }
+        return isTrueKeysInBunch;
+    }
+
+    public boolean isUniqueUuidBunchKeys(String other_id) {
+        boolean isUniqueUuid = true;
+        List<String> idList = getBunchKeysData();
+        for (String id : idList) {
+            if (id.equals(other_id)) {
+                isUniqueUuid = false;
+                break;
+            }
+        }
+        return isUniqueUuid;
+    }
+
+    public List<String> getBunchKeysData() {
         return getFileInventoryConfiguration().getStringList("inventory.bunch_of_keys_list");
     }
 

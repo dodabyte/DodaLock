@@ -17,10 +17,12 @@ import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class BunchKeysListener implements Listener {
-    BunchKeysMenu bunchKeysMenu;
+    Map<Player, BunchKeysMenu> bunchKeysMenuMap = new HashMap<>();
     @EventHandler
     public void onBunchKeysInventoryOpened(PlayerInteractEvent event) {
         String idBunchKeys = "";
@@ -38,12 +40,15 @@ public class BunchKeysListener implements Listener {
             if (event.getPlayer().isSneaking() &&
                     (ItemsManager.isBunchKeys(event.getPlayer().getEquipment().getItemInMainHand()) ||
                             container.has(key, PersistentDataType.STRING))) {
+                event.setCancelled(true);
                 Player player = event.getPlayer();
                 idBunchKeys = container.get(key, PersistentDataType.STRING);
 
                 // Если связка ключей не прописана в конфиге, то добавляем ему идентификатор в конфиг
                 if (!Configurations.getInventory().isBunchKeys(idBunchKeys)) {
                     UUID uuid = UUID.randomUUID();
+                    while (!Configurations.getInventory().isUniqueUuidBunchKeys(FormattableUtils.getUuidString(uuid)))
+                        uuid = UUID.randomUUID();
                     idBunchKeys = FormattableUtils.getUuidString(uuid);
                     itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, FormattableUtils.getUuidString(uuid));
                     itemInMainHand.setItemMeta(itemMeta);
@@ -53,15 +58,18 @@ public class BunchKeysListener implements Listener {
                     Configurations.getInventory().reload();
                 }
 
-                bunchKeysMenu = new BunchKeysMenu(player, idBunchKeys);
-                bunchKeysMenu.open();
+                bunchKeysMenuMap.put(player, new BunchKeysMenu(player, idBunchKeys));
+                bunchKeysMenuMap.get(player).open();
             }
         }
     }
 
     @EventHandler
     public void onBunchKeysInventoryClosed(InventoryCloseEvent event) {
-        if (event.getInventory().getHolder() instanceof BunchKeysMenuHolder)
-            Configurations.getInventory().serialize(bunchKeysMenu.getIdBunchKeys(), event.getInventory());
+        if (event.getInventory().getHolder() instanceof BunchKeysMenuHolder) {
+            bunchKeysMenuMap.get((Player) event.getPlayer()).checkInventory();
+            Configurations.getInventory().serialize(bunchKeysMenuMap.get((Player) event.getPlayer()).getIdBunchKeys(),
+                    event.getInventory());
+        }
     }
 }

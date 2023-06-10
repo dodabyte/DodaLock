@@ -15,7 +15,7 @@ public class ClearBunchKeysInventory extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (String bunchKeys : Configurations.getInventory().getBunchKeys()) {
+        for (String bunchKeys : Configurations.getInventory().getBunchKeysData()) {
             if (Configurations.getInventory().getLastDateSerialize(bunchKeys) != null &&
                     (LocalDateTime.now().minus(period, ChronoUnit.HOURS).isAfter(
                     Configurations.getInventory().getLastDateSerialize(bunchKeys)) ||

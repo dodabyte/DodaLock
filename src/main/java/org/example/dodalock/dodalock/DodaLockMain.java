@@ -31,12 +31,12 @@ public final class DodaLockMain extends JavaPlugin {
         ItemsManager.initializeItems();
         GuiItemsManager.initializeGuiItems();
 
+        checkLocks();
         checkBunchKeys();
     }
 
     @Override
     public void onDisable() {
-        checkLocks();
         Configurations.save();
     }
 
@@ -55,17 +55,21 @@ public final class DodaLockMain extends JavaPlugin {
         try {
             List<String> codeLocksList = Configurations.getLocks().getCodeLockData();
             for (String codeLock : codeLocksList) {
-                Location location = FormattableUtils.getLocationFromString(codeLock);
-                if (!WorldUtils.isTrueTypes(location.getBlock())) {
-                    Configurations.getLocks().removeCodeLock(codeLock);
+                if (codeLock != null && !codeLock.equals("")) {
+                    Location location = FormattableUtils.getLocationFromString(codeLock);
+                    if (!WorldUtils.isTrueTypes(location.getBlock())) {
+                        Configurations.getLocks().removeCodeLock(codeLock);
+                    }
                 }
             }
 
             List<String> locksList = Configurations.getLocks().getLockData();
             for (String lock : locksList) {
-                Location location = FormattableUtils.getLocationFromString(lock);
-                if (!WorldUtils.isTrueTypes(location.getBlock())) {
-                    Configurations.getLocks().removeLock(lock);
+                if (lock != null && !lock.equals("")) {
+                    Location location = FormattableUtils.getLocationFromString(lock);
+                    if (!WorldUtils.isTrueTypes(location.getBlock())) {
+                        Configurations.getLocks().removeLock(lock);
+                    }
                 }
             }
         }
