@@ -7,6 +7,7 @@ import org.example.dodalock.dodalock.DodaLockMain;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -141,6 +142,26 @@ public class LocksConfiguration {
                 && getOwnerFromLock(location).equals(owner.getName());
     }
 
+    public List<String> getLocksListWithOwner(Player owner) {
+        List<String> locksList = new ArrayList<>();
+        for (String lock : Configurations.getLocks().getLockData()) {
+            if (isOwnerInLock(lock, owner)) {
+                locksList.add(lock);
+            }
+        }
+        return locksList;
+    }
+
+    public List<String> getCodeLocksListWithPlayer(Player player) {
+        List<String> codeLocksList = new ArrayList<>();
+        for (String codeLock : Configurations.getLocks().getCodeLockData()) {
+            if (isPlayerInCodeLock(codeLock, player)) {
+                codeLocksList.add(codeLock);
+            }
+        }
+        return codeLocksList;
+    }
+
     public boolean isTruePassword(String location, String password) {
         return isCodeLock(location) && getPassword(location) != null && getPassword(location).equals(password);
     }
@@ -187,6 +208,14 @@ public class LocksConfiguration {
 
     public String getKey(String location) {
         return getFileLocksConfiguration().getString("data.configuration.locks." + location + ".id_key");
+    }
+
+    public List<String> getKeyIdList() {
+        List<String> keyIdList = new ArrayList<>();
+        for (String keyLocation : getLockData()) {
+            keyIdList.add(getKey(keyLocation));
+        }
+        return keyIdList;
     }
 
     public FileConfiguration getFileLocksConfiguration() { return fileLocksConfiguration; }

@@ -37,29 +37,30 @@ public class BunchKeysListener implements Listener {
                 idBunchKeys = container.get(key, PersistentDataType.STRING);
             }
 
-            if (event.getPlayer().isSneaking() &&
-                    (ItemsManager.isBunchKeys(event.getPlayer().getEquipment().getItemInMainHand()) ||
-                            container.has(key, PersistentDataType.STRING))) {
-                event.setCancelled(true);
-                Player player = event.getPlayer();
-                idBunchKeys = container.get(key, PersistentDataType.STRING);
+            if (ItemsManager.isBunchKeys(event.getPlayer().getEquipment().getItemInMainHand()) ||
+                    container.has(key, PersistentDataType.STRING)) {
+                if (event.getPlayer().isSneaking()) {
+                    event.setCancelled(true);
+                    Player player = event.getPlayer();
+                    idBunchKeys = container.get(key, PersistentDataType.STRING);
 
-                // Если связка ключей не прописана в конфиге, то добавляем ему идентификатор в конфиг
-                if (!Configurations.getInventory().isBunchKeys(idBunchKeys)) {
-                    UUID uuid = UUID.randomUUID();
-                    while (!Configurations.getInventory().isUniqueUuidBunchKeys(FormattableUtils.getUuidString(uuid)))
-                        uuid = UUID.randomUUID();
-                    idBunchKeys = FormattableUtils.getUuidString(uuid);
-                    itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, FormattableUtils.getUuidString(uuid));
-                    itemInMainHand.setItemMeta(itemMeta);
+                    // Если связка ключей не прописана в конфиге, то добавляем ему идентификатор в конфиг
+                    if (!Configurations.getInventory().isBunchKeys(idBunchKeys)) {
+                        UUID uuid = UUID.randomUUID();
+                        while (!Configurations.getInventory().isUniqueUuidBunchKeys(FormattableUtils.getUuidString(uuid)))
+                            uuid = UUID.randomUUID();
+                        idBunchKeys = FormattableUtils.getUuidString(uuid);
+                        itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, FormattableUtils.getUuidString(uuid));
+                        itemInMainHand.setItemMeta(itemMeta);
 
-                    Configurations.getInventory().addBunchKeys(idBunchKeys);
-                    Configurations.getInventory().save();
-                    Configurations.getInventory().reload();
+                        Configurations.getInventory().addBunchKeys(idBunchKeys);
+                        Configurations.getInventory().save();
+                        Configurations.getInventory().reload();
+                    }
+
+                    bunchKeysMenuMap.put(player, new BunchKeysMenu(player, idBunchKeys));
+                    bunchKeysMenuMap.get(player).open();
                 }
-
-                bunchKeysMenuMap.put(player, new BunchKeysMenu(player, idBunchKeys));
-                bunchKeysMenuMap.get(player).open();
             }
         }
     }

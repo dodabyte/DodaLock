@@ -40,6 +40,7 @@ public class LockOperation {
                 ItemMeta itemMeta = item.getItemMeta();
                 NamespacedKey key = new NamespacedKey(DodaLockMain.getPlugin(), location);
                 itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, uuid.toString());
+                itemMeta.setCustomModelData(3);
                 item.setItemMeta(itemMeta);
 
                 player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()

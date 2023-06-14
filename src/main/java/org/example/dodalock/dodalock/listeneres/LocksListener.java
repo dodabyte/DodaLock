@@ -27,11 +27,10 @@ public class LocksListener implements Listener {
         if (event.getHand() == EquipmentSlot.HAND) {
             Block clicked = event.getClickedBlock();
             Player player = event.getPlayer();
-            Location location;
+            Location location = WorldUtils.getLocation(clicked);
 
-            if (clicked != null && event.getAction() == Action.RIGHT_CLICK_BLOCK && WorldUtils.isTrueTypes(clicked)) {
-                location = WorldUtils.getLocation(clicked);
-                if (location != null) {
+            if (location != null && clicked != null && WorldUtils.isTrueTypes(clicked)) {
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (player.isSneaking()) {
                         // Открытие меню кодового замка при его наличии на двери
                         if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
@@ -123,13 +122,9 @@ public class LocksListener implements Listener {
                             ChatUtils.printMessage(player, "error.open_object_with_lock");
                         }
                     }
-                }
-                Configurations.getLocks().save();
-                Configurations.getLocks().reload();
-            } else if (event.getClickedBlock() != null && event.getAction() == Action.LEFT_CLICK_BLOCK &&
-                    WorldUtils.isTrueTypes(event.getClickedBlock())) {
-                location = WorldUtils.getLocation(clicked);
-                if (location != null) {
+                    Configurations.getLocks().save();
+                    Configurations.getLocks().reload();
+                } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     if (player.isSneaking()) {
                         // Удаление кодового замка из конфига и его снятие с двери
                         if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
@@ -149,9 +144,21 @@ public class LocksListener implements Listener {
                             ChatUtils.printMessage(player, "success.remove_lock");
                         }
                     }
+                    Configurations.getLocks().save();
+                    Configurations.getLocks().reload();
                 }
-                Configurations.getLocks().save();
-                Configurations.getLocks().reload();
+            }
+            else {
+                // Отмена любых действий с ключом и связкой ключей, если клик на любой другой блок, кроме дверей и т.д.
+                if (ItemsManager.isKey(player.getEquipment().getItemInMainHand()) ||
+                        (player.getEquipment().getItemInMainHand().getItemMeta() != null &&
+                        player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
+                        (player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
+                        toArray()[0].toString().matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}") ||
+                        player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
+                        toArray()[0].toString().contains("dodalock:bunch_keys")))) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

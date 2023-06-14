@@ -56,7 +56,7 @@ public class Configurations {
     public static void reload() {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
         CONFIG = new MainConfiguration(fileConfiguration);
-        getConfig().setup("en_us", true, 1);
+        getConfig().setup(language, clearBunchKeysInventory, verificationPeriod);
         LANGUAGE = new LanguageConfiguration(getConfig().getLanguage());
         LOCKS = new LocksConfiguration();
     }

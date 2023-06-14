@@ -5,3 +5,8 @@ api-version: 1.19
 authors: [ dodabyte ]
 description: The plugin adds the ability to close doors, trapdoors and chests with a lock or combination lock.
 website: https://github.com/dodabyte
+commands:
+  dodalock:
+    aliases:
+      - dl
+    description: "General information about the plugin."

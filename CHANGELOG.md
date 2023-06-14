@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.0 - 12.06.2023 - 14.06.2023
+
+_Additions and corrections._
+
+### Added
+
+- _Plugin commands: help, list, remove, clear, clone, reload._
+- _Cloning a key._
+
+### Changed
+
+- _The material of the keys has been changed to a wooden hoe._
+- _Changed the structure of "if" checks in the code of the 
+LocksListener class._
+
+### Fixed
+
+- _When transferring a stack of keys to the inventory of a 
+bunch of keys, the entire stack is transferred to one cell._
+- _Now, when using keys, the hoe functions do not work._
+
+
 ## v1.0 - 10.06.2023
 
 _Basic and important corrections, as well as improvements._

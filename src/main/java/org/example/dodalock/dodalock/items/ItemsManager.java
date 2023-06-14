@@ -4,12 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
+import java.util.List;
+
 public class ItemsManager {
-    private static final Material material = Material.BOOK;
-    private static final Material materialBunchKeys = Material.WOODEN_HOE;
+    private static final Material locksMaterial = Material.BOOK;
+    private static final Material keysMaterial = Material.WOODEN_HOE;
 
     private static CustomItem codeLock;
     private static CustomItem lock;
@@ -17,10 +20,10 @@ public class ItemsManager {
     private static CustomItem bunchKeys;
 
     public static void initializeItems() {
-        codeLock = new CustomItem(material, 1, Configurations.getLanguage().translate("items_name.code_lock"));
-        lock = new CustomItem(material, 2, Configurations.getLanguage().translate("items_name.lock"));
-        key = new CustomItem(material, 3, Configurations.getLanguage().translate("items_name.key"));
-        bunchKeys = new CustomItem(materialBunchKeys, 1, Configurations.getLanguage().translate("items_name.bunch_keys"));
+        codeLock = new CustomItem(locksMaterial, 1, Configurations.getLanguage().translate("items_name.code_lock"));
+        lock = new CustomItem(locksMaterial, 2, Configurations.getLanguage().translate("items_name.lock"));
+        key = new CustomItem(keysMaterial, 1, Configurations.getLanguage().translate("items_name.key"));
+        bunchKeys = new CustomItem(keysMaterial, 2, Configurations.getLanguage().translate("items_name.bunch_keys"));
 
         createRecipes();
     }
@@ -50,11 +53,17 @@ public class ItemsManager {
     }
 
     private static void createKeyRecipe() {
-        ShapedRecipe recipe = new ShapedRecipe(NamespacedKey.minecraft("key"), key.getItemStack());
-        recipe.shape("%", "$");
-        recipe.setIngredient('%', Material.IRON_INGOT);
-        recipe.setIngredient('$', Material.LEVER);
-        Bukkit.addRecipe(recipe);
+        ShapedRecipe recipe1 = new ShapedRecipe(NamespacedKey.minecraft("key"), key.getItemStack());
+        recipe1.shape("%", "$");
+        recipe1.setIngredient('%', Material.IRON_INGOT);
+        recipe1.setIngredient('$', Material.LEVER);
+        Bukkit.addRecipe(recipe1);
+
+        // TODO Реализовать крафт клона ключа
+//        ShapedRecipe recipe2 = new ShapedRecipe(NamespacedKey.minecraft("key_clone"), key.getItemStack());
+//        recipe2.shape("$", "$");
+//        recipe2.setIngredient('$', Material.BOOK);
+//        Bukkit.addRecipe(recipe2);
     }
 
     private static void createBunchKeysRecipe() {
