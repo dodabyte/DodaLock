@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LocksConfiguration {
-    private static File file;
+    private File file;
     private FileConfiguration fileLocksConfiguration;
 
     public LocksConfiguration() {

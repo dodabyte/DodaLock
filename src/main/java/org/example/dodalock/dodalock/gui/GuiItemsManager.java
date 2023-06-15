@@ -36,34 +36,34 @@ public class GuiItemsManager {
     private static CustomItem inventoryButtonC;
 
     public static void initializeGuiItems() {
-        inventoryPart = new CustomItem(material, 1, Configurations.getLanguage().translate("gui.plug"));
-        inventoryButton0 = new CustomItem(material, 2, Configurations.getLanguage().translate("gui.number_0"));
-        inventoryButton1 = new CustomItem(material, 3, Configurations.getLanguage().translate("gui.number_1"));
-        inventoryButton2 = new CustomItem(material, 4, Configurations.getLanguage().translate("gui.number_2"));
-        inventoryButton3 = new CustomItem(material, 5, Configurations.getLanguage().translate("gui.number_3"));
-        inventoryButton4 = new CustomItem(material, 6, Configurations.getLanguage().translate("gui.number_4"));
-        inventoryButton5 = new CustomItem(material, 7, Configurations.getLanguage().translate("gui.number_5"));
-        inventoryButton6 = new CustomItem(material, 8, Configurations.getLanguage().translate("gui.number_6"));
-        inventoryButton7 = new CustomItem(material, 9, Configurations.getLanguage().translate("gui.number_7"));
-        inventoryButton8 = new CustomItem(material, 10, Configurations.getLanguage().translate("gui.number_8"));
-        inventoryButton9 = new CustomItem(material, 11, Configurations.getLanguage().translate("gui.number_9"));
-        inventoryPartWithBorderLeft = new CustomItem(material, 12, Configurations.getLanguage().translate("gui.plug"));
-        inventoryPartWithBorderUp = new CustomItem(material, 13, Configurations.getLanguage().translate("gui.plug"));
-        inventoryPartWithBorderLeftUp = new CustomItem(material, 14, Configurations.getLanguage().translate("gui.plug"));
-        inventoryPartWithBorderDotLeftUp = new CustomItem(material, 15, Configurations.getLanguage().translate("gui.plug"));
-        inventoryField = new CustomItem(material, 16, Configurations.getLanguage().translate("gui.plug"));
-        inventoryField0 = new CustomItem(material, 17, Configurations.getLanguage().translate("gui.number_0"));
-        inventoryField1 = new CustomItem(material, 18, Configurations.getLanguage().translate("gui.number_1"));
-        inventoryField2 = new CustomItem(material, 19, Configurations.getLanguage().translate("gui.number_2"));
-        inventoryField3 = new CustomItem(material, 20, Configurations.getLanguage().translate("gui.number_3"));
-        inventoryField4 = new CustomItem(material, 21, Configurations.getLanguage().translate("gui.number_4"));
-        inventoryField5 = new CustomItem(material, 22, Configurations.getLanguage().translate("gui.number_5"));
-        inventoryField6 = new CustomItem(material, 23, Configurations.getLanguage().translate("gui.number_6"));
-        inventoryField7 = new CustomItem(material, 24, Configurations.getLanguage().translate("gui.number_7"));
-        inventoryField8 = new CustomItem(material, 25, Configurations.getLanguage().translate("gui.number_8"));
-        inventoryField9 = new CustomItem(material, 26, Configurations.getLanguage().translate("gui.number_9"));
-        inventoryButtonE = new CustomItem(material, 27, Configurations.getLanguage().translate("gui.enter"));
-        inventoryButtonC = new CustomItem(material, 28, Configurations.getLanguage().translate("gui.clear"));
+        inventoryPart = new CustomItem(material, 1, "gui.plug");
+        inventoryButton0 = new CustomItem(material, 2, "gui.number_0");
+        inventoryButton1 = new CustomItem(material, 3, "gui.number_1");
+        inventoryButton2 = new CustomItem(material, 4, "gui.number_2");
+        inventoryButton3 = new CustomItem(material, 5, "gui.number_3");
+        inventoryButton4 = new CustomItem(material, 6, "gui.number_4");
+        inventoryButton5 = new CustomItem(material, 7, "gui.number_5");
+        inventoryButton6 = new CustomItem(material, 8, "gui.number_6");
+        inventoryButton7 = new CustomItem(material, 9, "gui.number_7");
+        inventoryButton8 = new CustomItem(material, 10, "gui.number_8");
+        inventoryButton9 = new CustomItem(material, 11, "gui.number_9");
+        inventoryPartWithBorderLeft = new CustomItem(material, 12, "gui.plug");
+        inventoryPartWithBorderUp = new CustomItem(material, 13, "gui.plug");
+        inventoryPartWithBorderLeftUp = new CustomItem(material, 14, "gui.plug");
+        inventoryPartWithBorderDotLeftUp = new CustomItem(material, 15, "gui.plug");
+        inventoryField = new CustomItem(material, 16, "gui.plug");
+        inventoryField0 = new CustomItem(material, 17, "gui.number_0");
+        inventoryField1 = new CustomItem(material, 18, "gui.number_1");
+        inventoryField2 = new CustomItem(material, 19, "gui.number_2");
+        inventoryField3 = new CustomItem(material, 20, "gui.number_3");
+        inventoryField4 = new CustomItem(material, 21, "gui.number_4");
+        inventoryField5 = new CustomItem(material, 22, "gui.number_5");
+        inventoryField6 = new CustomItem(material, 23, "gui.number_6");
+        inventoryField7 = new CustomItem(material, 24, "gui.number_7");
+        inventoryField8 = new CustomItem(material, 25, "gui.number_8");
+        inventoryField9 = new CustomItem(material, 26, "gui.number_9");
+        inventoryButtonE = new CustomItem(material, 27, "gui.enter");
+        inventoryButtonC = new CustomItem(material, 28, "gui.clear");
     }
 
     public static CustomItem getInventoryPart() { return inventoryPart; }

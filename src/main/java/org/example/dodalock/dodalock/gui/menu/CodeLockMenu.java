@@ -89,15 +89,21 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                 else if (Configurations.getLocks().isCodeLock(location) &&
                                     !Configurations.getLocks().isPlayerInCodeLock(location, player) &&
                                     !Configurations.getLocks().isTruePassword(location, password)) {
-                                        CheckPlayersAttempts.addAttempt(location, player);
-                                        if (CheckPlayersAttempts.getAttempts(location, player) >= 3) {
-                                            CheckPlayersAttempts.removeAttempts(location, player);
-                                            CheckPlayersAttempts.removeLocation(location);
-                                            player.closeInventory();
-                                            player.damage(6);
-                                            ChatUtils.printMessage(player, "error.damage_for_exceeding_attempts");
+                                        if (Configurations.getConfig().isEnableDamage()) {
+                                            CheckPlayersAttempts.addAttempt(location, player);
+                                            if (CheckPlayersAttempts.getAttempts(location, player) >=
+                                                    Configurations.getConfig().getMaxAttemptsDamage()) {
+                                                CheckPlayersAttempts.removeAttempts(location, player);
+                                                CheckPlayersAttempts.removeLocation(location);
+                                                player.closeInventory();
+                                                player.damage(6);
+                                                ChatUtils.printMessage(player, "error.damage_for_exceeding_attempts");
+                                            } else
+                                                ChatUtils.printError(player,
+                                                    Configurations.getLanguage().
+                                                    translate("error.invalid_password_with_attempts") +
+                                                    (Configurations.getConfig().getMaxAttemptsDamage() - CheckPlayersAttempts.getAttempts(location, player)));
                                         }
-                                        else ChatUtils.printMessage(player, "error.invalid_password_with_attempts");
                                 }
                                 // Кодовый замок имеется на двери, игрок уже открывал дверь, при этом
                                 // пароль введён неправильно -> смена пароля для указанного замка

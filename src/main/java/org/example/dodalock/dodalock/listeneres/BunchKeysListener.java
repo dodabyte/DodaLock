@@ -31,7 +31,7 @@ public class BunchKeysListener implements Listener {
             ItemStack itemInMainHand = event.getPlayer().getEquipment().getItemInMainHand();
             ItemMeta itemMeta = itemInMainHand.getItemMeta();
             NamespacedKey key = new NamespacedKey(DodaLockMain.getPlugin(),
-                    "bunch_keys");
+                    "bunch_of_keys");
             PersistentDataContainer container = itemMeta.getPersistentDataContainer();
             if (container.has(key, PersistentDataType.STRING)) {
                 idBunchKeys = container.get(key, PersistentDataType.STRING);

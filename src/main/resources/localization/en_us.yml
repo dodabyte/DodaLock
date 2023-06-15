@@ -2,7 +2,7 @@ items_name:
   code_lock: 'Code lock'
   lock : 'Lock'
   key: 'Key'
-  bunch_keys: 'Bunch of keys'
+  bunch_of_keys: 'Bunch of keys'
 gui:
   plug: ''
   number_1: '1'

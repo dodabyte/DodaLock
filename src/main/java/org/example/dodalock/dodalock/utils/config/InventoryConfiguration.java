@@ -115,9 +115,11 @@ public class InventoryConfiguration {
         if (idBunchKeys != null && !idBunchKeys.equals("") && isBunchKeys(idBunchKeys)) {
             for (ItemStack item : getKeysInBunchKeys(idBunchKeys)) {
                 if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
-                        has(new NamespacedKey(DodaLockMain.getPlugin(),
-                        FormattableUtils.getLocationString(location)),
-                        PersistentDataType.STRING)) {
+                        has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
+                        PersistentDataType.STRING) && item.getItemMeta().getPersistentDataContainer().
+                        get(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
+                        PersistentDataType.STRING).equals(Configurations.getLocks().
+                        getKey(FormattableUtils.getLocationString(location)))) {
                     isTrueKeysInBunch = true;
                     break;
                 }

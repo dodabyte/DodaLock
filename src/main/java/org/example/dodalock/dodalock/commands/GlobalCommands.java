@@ -36,7 +36,10 @@ public class GlobalCommands implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("list")) {
-            if (args.length < 2) ChatUtils.printMessage(player, "error.name_list_missing");
+            if (args.length < 2) {
+                ChatUtils.printMessage(player, "error.name_list_missing");
+                return true;
+            }
             else if (args.length > 2) {
                 StringBuilder enteredCommand = new StringBuilder("/" + label);
                 for (String arg : args) {
@@ -45,6 +48,7 @@ public class GlobalCommands implements CommandExecutor {
                 String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
                 enteredCommand.append("<--[").append(here).append("]");
                 ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                return true;
             }
 
             if (args[1].equalsIgnoreCase("all")) {
@@ -63,8 +67,14 @@ public class GlobalCommands implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("remove")) {
-            if (args.length < 2) ChatUtils.printMessage(player, "error.name_list_missing");
-            else if (args.length < 3) ChatUtils.printMessage(player, "error.num_or_loc_missing");
+            if (args.length < 2) {
+                ChatUtils.printMessage(player, "error.name_list_missing");
+                return true;
+            }
+            else if (args.length < 3) {
+                ChatUtils.printMessage(player, "error.num_or_loc_missing");
+                return true;
+            }
             else if (args.length > 3) {
                 StringBuilder enteredCommand = new StringBuilder("/" + label);
                 for (String arg : args) {
@@ -73,6 +83,7 @@ public class GlobalCommands implements CommandExecutor {
                 String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
                 enteredCommand.append("<--[").append(here).append("]");
                 ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                return true;
             }
 
             if (!args[1].equalsIgnoreCase("codelock") && !args[1].equalsIgnoreCase("lock")) {
@@ -125,7 +136,10 @@ public class GlobalCommands implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("clear")) {
-            if (args.length < 2) ChatUtils.printMessage(player, "error.name_list_missing");
+            if (args.length < 2) {
+                ChatUtils.printMessage(player, "error.name_list_missing");
+                return true;
+            }
             else if (args.length > 2) {
                 StringBuilder enteredCommand = new StringBuilder("/" + label);
                 for (String arg : args) {
@@ -134,6 +148,7 @@ public class GlobalCommands implements CommandExecutor {
                 String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
                 enteredCommand.append("<--[").append(here).append("]");
                 ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                return true;
             }
 
             List<String> locksList;
@@ -170,6 +185,17 @@ public class GlobalCommands implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("clone")) {
+            if (args.length > 1) {
+                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                for (String arg : args) {
+                    enteredCommand.append(" ").append(arg);
+                }
+                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
+                enteredCommand.append("<--[").append(here).append("]");
+                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                return true;
+            }
+
             if (player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
                     player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
                     toArray()[0].toString().matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}")) {
@@ -194,6 +220,7 @@ public class GlobalCommands implements CommandExecutor {
                 String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
                 enteredCommand.append("<--[").append(here).append("]");
                 ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                return true;
             }
 
             Configurations.reload();

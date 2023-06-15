@@ -9,6 +9,7 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Configurations.getLanguage().checkItemsLocalization(event.getPlayer());
-        event.getPlayer().setResourcePack("http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip");
+        if (Configurations.getConfig().isEnableResourcePack())
+            event.getPlayer().setResourcePack(Configurations.getConfig().getResourcePackUrl());
     }
 }

@@ -47,30 +47,34 @@ public class LanguageConfiguration {
                 player.getInventory().contains(ItemsManager.getBunchKeys().getItemStack())) {
             for (int i = 0; i < player.getInventory().getSize(); i++) {
                 if (player.getInventory().getItem(i) != null &&
-                        player.getInventory().getItem(i).equals(ItemsManager.getCodeLock())) {
-                    ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.code_lock"));
-                    player.getInventory().getItem(i).setItemMeta(itemMeta);
-                }
-                else if (player.getInventory().getItem(i) != null &&
-                        player.getInventory().getItem(i).equals(ItemsManager.getLock())) {
-                    ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.lock"));
-                    player.getInventory().getItem(i).setItemMeta(itemMeta);
-                }
-                else if (player.getInventory().getItem(i) != null &&
-                        player.getInventory().getItem(i).equals(ItemsManager.getKey())) {
-                    ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.key"));
-                    player.getInventory().getItem(i).setItemMeta(itemMeta);
-                }
-                else if (player.getInventory().getItem(i) != null &&
-                        player.getInventory().getItem(i).equals(ItemsManager.getBunchKeys())) {
-                    ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
-                    itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.bunch_keys"));
-                    player.getInventory().getItem(i).setItemMeta(itemMeta);
+                        !player.getInventory().getItem(i).getItemMeta().getDisplayName().contains(ChatColor.ITALIC + "")) {
+                    if (ItemsManager.isCodeLock(player.getInventory().getItem(i))) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.code_lock"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    } else if (ItemsManager.isLock(player.getInventory().getItem(i))) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.lock"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    } else if (ItemsManager.isKey(player.getInventory().getItem(i)) ||
+                            (player.getInventory().getItemInMainHand().getItemMeta() != null &&
+                            player.getInventory().getItem(i).getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
+                            player.getInventory().getItem(i).getItemMeta().getPersistentDataContainer().getKeys().
+                            toArray()[0].toString().matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}"))) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.key"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    } else if (ItemsManager.isBunchKeys(player.getInventory().getItem(i)) ||
+                            (player.getInventory().getItem(i).getItemMeta() != null &&
+                            player.getInventory().getItem(i).getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
+                            player.getInventory().getItem(i).getItemMeta().getPersistentDataContainer().getKeys().
+                            toArray()[0].toString().matches("dodalock:bunch_of_keys"))) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.bunch_of_keys"));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    }
                 }
             }
-        };
+        }
     }
 }

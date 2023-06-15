@@ -5,6 +5,8 @@ import org.bukkit.Location;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class FormattableUtils {
@@ -33,5 +35,24 @@ public class FormattableUtils {
 
     public static String getUuidString(UUID uuid) {
         return uuid.toString();
+    }
+
+    public static String[] getShapeArray(String shape) {
+        if (shape.replace(" ", "").contains(","))
+            return shape.replace(" ", "").split(",");
+        return null;
+    }
+
+    public static Map<Character, String> getShapeMaterialsMap(String shapeMaterials) {
+        Map<Character, String> shapeMaterialsMap = new HashMap<>();
+        String[] strings = shapeMaterials.replace(" ", "").split(",");
+        for (String string : strings) {
+            if (string.replace(" ", "").matches(".:[a-zA-Z_]+")) {
+                char symbol = string.replace(" ", "").split(":")[0].charAt(0);
+                String material = string.replace(" ", "").split(":")[1];
+                shapeMaterialsMap.put(symbol, material);
+            }
+        }
+        return shapeMaterialsMap;
     }
 }

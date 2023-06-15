@@ -65,8 +65,9 @@ public class ChatUtils {
 
     public static void printCodeLocksList(Player player) {
         StringBuilder message = new StringBuilder(ChatColor.YELLOW + "--------- " + ChatColor.WHITE +
-                Configurations.getLanguage().translate("data.code_locks_list") + "\n" + ChatColor.YELLOW + " ---------\n");
+                Configurations.getLanguage().translate("data.code_locks_list") + ChatColor.YELLOW + " ---------\n");
         List<String> codeLocksList = Configurations.getLocks().getCodeLocksListWithPlayer(player);
+        if (codeLocksList.size() < 1) return;
         for (int i = 0; i < codeLocksList.size(); i++) {
             if (Configurations.getLocks().isPlayerInCodeLock(codeLocksList.get(i), player)) {
                 message.append(i + 1).append(") ").append(codeLocksList.get(i)).append("\n");
@@ -77,8 +78,9 @@ public class ChatUtils {
 
     public static void printLocksList(Player player) {
         StringBuilder message = new StringBuilder(ChatColor.YELLOW + "--------- " + ChatColor.WHITE +
-                Configurations.getLanguage().translate("data.locks_list") + "\n" + ChatColor.YELLOW + " ---------\n");
+                Configurations.getLanguage().translate("data.locks_list") + ChatColor.YELLOW + " ---------\n");
         List<String> locksList = Configurations.getLocks().getLocksListWithOwner(player);
+        if (locksList.size() < 1) return;
         for (int i = 0; i < locksList.size(); i++) {
             message.append(i + 1).append(") ").append(locksList.get(i)).append("\n");
         }

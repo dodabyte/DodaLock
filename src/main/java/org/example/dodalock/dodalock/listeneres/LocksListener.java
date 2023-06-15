@@ -29,7 +29,9 @@ public class LocksListener implements Listener {
             Player player = event.getPlayer();
             Location location = WorldUtils.getLocation(clicked);
 
-            if (location != null && clicked != null && WorldUtils.isTrueTypes(clicked)) {
+            if (clicked == null) return;
+
+            if (location != null && WorldUtils.isTrueTypes(clicked)) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     if (player.isSneaking()) {
                         // Открытие меню кодового замка при его наличии на двери
@@ -58,7 +60,6 @@ public class LocksListener implements Listener {
                             // Клик на дверь с замком в руках при отсутствии его на двери с последующим добавлением замка
                             if (!Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
                                     !Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
-                                event.setCancelled(true);
                                 LockOperation.handle(player, FormattableUtils.getLocationString(location));
                             }
                             // Вывод сообщения о том, что установить замок нельзя, так как уже установлен замок
@@ -73,7 +74,6 @@ public class LocksListener implements Listener {
                         // Клик на дверь с ключом в руках при наличии замка на двери с последующим добавлением ключа
                         else if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
                                 ItemsManager.isKey(player.getEquipment().getItemInMainHand())) {
-                            event.setCancelled(true);
                             LockOperation.handle(player, FormattableUtils.getLocationString(location));
                         }
                         // При попытке открыть дверь, когда замок установлен и игрок не держит ничего в руках,
@@ -99,12 +99,16 @@ public class LocksListener implements Listener {
                         if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
                                 Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
                                 (player.getEquipment().getItemInMainHand().getItemMeta() != null &&
-                                        ((!player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
-                                                has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
-                                                        PersistentDataType.STRING)) && (!player.getEquipment().getItemInMainHand().getItemMeta().
-                                                getPersistentDataContainer().has(new NamespacedKey(DodaLockMain.getPlugin(),
-                                                        "bunch_keys"), PersistentDataType.STRING))) ||
-                                        player.getEquipment().getItemInMainHand().getItemMeta() == null)) {
+                                ((!player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
+                                has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
+                                PersistentDataType.STRING) || !player.getEquipment().getItemInMainHand().getItemMeta().
+                                getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
+                                FormattableUtils.getLocationString(location)), PersistentDataType.STRING).
+                                equals(Configurations.getLocks().getKey(FormattableUtils.getLocationString(location)))) &&
+                                (!player.getEquipment().getItemInMainHand().getItemMeta().
+                                getPersistentDataContainer().has(new NamespacedKey(DodaLockMain.getPlugin(),
+                                "bunch_of_keys"), PersistentDataType.STRING))) ||
+                                player.getEquipment().getItemInMainHand().getItemMeta() == null)) {
                             event.setCancelled(true);
                             ChatUtils.printMessage(player, "error.open_object_with_lock");
                         }
@@ -114,17 +118,18 @@ public class LocksListener implements Listener {
                                 Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
                                 player.getEquipment().getItemInMainHand().getItemMeta() != null &&
                                 player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().
-                                        has(new NamespacedKey(DodaLockMain.getPlugin(), "bunch_keys"), PersistentDataType.STRING) &&
+                                has(new NamespacedKey(DodaLockMain.getPlugin(), "bunch_of_keys"), PersistentDataType.STRING) &&
                                 !Configurations.getInventory().checkDoorWithBunchKeys(location, player.getEquipment().getItemInMainHand().
-                                        getItemMeta().getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
-                                                "bunch_keys"), PersistentDataType.STRING))) {
+                                getItemMeta().getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
+                                "bunch_of_keys"), PersistentDataType.STRING))) {
                             event.setCancelled(true);
                             ChatUtils.printMessage(player, "error.open_object_with_lock");
                         }
                     }
                     Configurations.getLocks().save();
                     Configurations.getLocks().reload();
-                } else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+                }
+                else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     if (player.isSneaking()) {
                         // Удаление кодового замка из конфига и его снятие с двери
                         if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
@@ -148,7 +153,9 @@ public class LocksListener implements Listener {
                     Configurations.getLocks().reload();
                 }
             }
-            else {
+            else if (clicked.getType() == Material.DIRT || clicked.getType() == Material.DIRT_PATH ||
+                    clicked.getType() == Material.GRASS_BLOCK || clicked.getType() == Material.ROOTED_DIRT ||
+                    clicked.getType() == Material.COARSE_DIRT) {
                 // Отмена любых действий с ключом и связкой ключей, если клик на любой другой блок, кроме дверей и т.д.
                 if (ItemsManager.isKey(player.getEquipment().getItemInMainHand()) ||
                         (player.getEquipment().getItemInMainHand().getItemMeta() != null &&
@@ -156,7 +163,7 @@ public class LocksListener implements Listener {
                         (player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
                         toArray()[0].toString().matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}") ||
                         player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
-                        toArray()[0].toString().contains("dodalock:bunch_keys")))) {
+                        toArray()[0].toString().contains("dodalock:bunch_of_keys")))) {
                     event.setCancelled(true);
                 }
             }

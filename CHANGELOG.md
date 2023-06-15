@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0 - 15.06.2023
+
+_Config updates and code refinement._
+
+### Added
+
+- _The ability to change the recipe of items in config._
+- _The ability to enable and disable the resource pack in 
+the config, as well as setting up a link to the resource pack._
+- _The ability to enable and disable taking damage with a preset 
+number of attempts to open the combination lock_.
+
+### Fixed
+
+- _The door with the new lock and key was opened with 
+the key from the old lock_.
+- _When installing a regular lock and a key for the lock, 
+the door opened._
+- _The interfaces of some blocks (for example, the anvil, etc.) 
+did not open._
+
 ## v1.0 - 12.06.2023 - 14.06.2023
 
 _Additions and corrections._
