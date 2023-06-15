@@ -69,6 +69,9 @@ public class BunchKeysListener implements Listener {
     public void onBunchKeysInventoryClosed(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof BunchKeysMenuHolder) {
             bunchKeysMenuMap.get((Player) event.getPlayer()).checkInventory();
+            if (Configurations.getConfig().isEnableLore()) {
+                bunchKeysMenuMap.get((Player) event.getPlayer()).setLore();
+            }
             Configurations.getInventory().serialize(bunchKeysMenuMap.get((Player) event.getPlayer()).getIdBunchKeys(),
                     event.getInventory());
         }

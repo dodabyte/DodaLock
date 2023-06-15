@@ -11,6 +11,9 @@ _Config updates and code refinement._
 the config, as well as setting up a link to the resource pack._
 - _The ability to enable and disable taking damage with a preset 
 number of attempts to open the combination lock_.
+- _The ability to select the display of the ent with the coordinates 
+of the lock for keys._
+- _Comments on each line of the configuration file._
 
 ### Fixed
 

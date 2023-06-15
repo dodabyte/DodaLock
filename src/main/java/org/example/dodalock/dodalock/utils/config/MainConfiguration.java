@@ -6,6 +6,8 @@ import org.example.dodalock.dodalock.DodaLockMain;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainConfiguration {
     private static File file;
@@ -33,10 +35,10 @@ public class MainConfiguration {
 
     public void setup() {
         setLanguage();
-        setAllowClearBunchKeysInventory();
-        setVerificationPeriod();
-        setResourcePack();
+        setClearBunchKeysInventory();
+        setLore();
         setDamage();
+        setResourcePack();
         setCustomItemsOptions();
     }
 
@@ -53,25 +55,23 @@ public class MainConfiguration {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void setLanguage() { getFileConfiguration().set("language", language); }
+    private void setLanguage() {
+        getFileConfiguration().set("language", language);
 
-    public String getLanguage() { return getFileConfiguration().getString("language"); }
+        getFileConfiguration().setComments("language",
+                List.of("The language of the plugin interface. Default: en_us (English)"));
+    }
 
-    private void setAllowClearBunchKeysInventory() {
+    private void setClearBunchKeysInventory() {
         getFileConfiguration().set("allow_clear_bunch_of_keys_inventory", Boolean.valueOf(clearBunchKeysInventory));
-    }
-
-    public boolean getAllowClearBunchKeysInventory() {
-        return getFileConfiguration().getBoolean("allow_clear_bunch_of_keys_inventory");
-    }
-
-    private void setVerificationPeriod() {
         if (verificationPeriod < 0) verificationPeriod = 0;
         getFileConfiguration().set("verification_period", Integer.valueOf(verificationPeriod));
-    }
 
-    public int getVerificationPeriod() {
-        return getFileConfiguration().getInt("verification_period");
+        getFileConfiguration().setComments("allow_clear_bunch_of_keys_inventory",
+                List.of("", "", "Setting that includes clearing the bunch of keys inventory data once in a while. Default: true"));
+        getFileConfiguration().setComments("verification_period",
+                List.of("", "Setting the frequency (in hours) of checking the inventory of the bunch of keys for cleaning." +
+                        " Default: 3"));
     }
 
     private void setCustomItemsOptions() {
@@ -97,19 +97,63 @@ public class MainConfiguration {
         getFileConfiguration().createSection("items.bunch_of_keys");
         getFileConfiguration().set("items.bunch_of_keys.shape", "-$-, $%$, -$-");
         getFileConfiguration().set("items.bunch_of_keys.shape_materials", "%: IRON_INGOT, $: STRING");
+
+        getFileConfiguration().setComments("items",
+                List.of("", "", "Setting up recipes for crafting custom items.",
+                        "shape - The items crafts shape. Max. three lines and three characters by line, where " +
+                                "symbol '-' is none. Example: #$#, -#-, #$#.",
+                        "shape_materials - Materials intended for crafting. Example: #: IRON_INGOT, $: STICK"));
+        getFileConfiguration().setComments("items.code_lock.shape", List.of("Default: $$$, &*%, $$$"));
+        getFileConfiguration().setComments("items.code_lock.shape_materials",
+                List.of("Default: $: IRON_INGOT, *: REDSTONE_BLOCK, &: STONE_BUTTON, %: GLASS_PANE"));
+        getFileConfiguration().setComments("items.lock.shape", List.of("Default: %%, %%"));
+        getFileConfiguration().setComments("items.lock.shape_materials", List.of("Default: %: IRON_INGOT"));
+        getFileConfiguration().setComments("items.key.shape", List.of("Default: %, $"));
+        getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_INGOT, $: LEVER"));
+        getFileConfiguration().setComments("items.bunch_of_keys.shape", List.of("Default: -$-, $%$, -$-"));
+        getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_INGOT, $: STRING"));
     }
 
     private void setResourcePack() {
         getFileConfiguration().set("enable_resourcepack", true);
         getFileConfiguration().set("resourcepack_url", "http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip");
+
+        getFileConfiguration().setComments("enable_resourcepack",
+                List.of("", "", "Setting enable a custom resourcepack for the plugin. Default: true"));
+        getFileConfiguration().setComments("resourcepack_url",
+                List.of("", "Setting responsible for the link to the resource pack. " +
+                        "Default: http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip"));
     }
 
     private void setDamage() {
         getFileConfiguration().set("enable_damage", true);
         getFileConfiguration().set("max_attempts_to_take_damage", 3);
+
+        getFileConfiguration().setComments("enable_damage",
+                List.of("", "", "Setting enable a damage from the code lock during incorrect input password entry attempts. " +
+                        "Default: true"));
+        getFileConfiguration().setComments("max_attempts_to_take_damage",
+                List.of("", "Setting the maximum number of attempts in which damage from incorrect password entry is not inflicted. " +
+                        "Default: 3"));
     }
 
-    public boolean isEnableDamage() { return getFileConfiguration().getBoolean("enable_damage"); }
+    private void setLore() {
+        getFileConfiguration().set("enable_key_lore", true);
+
+        getFileConfiguration().setComments("enable_key_lore",
+                List.of("", "", "Setting enable a lore for keys and a bunch of keys, displaying the coordinates of the lock " +
+                        "that the key or keys are associated with. Default: true"));
+    }
+
+    public String getLanguage() { return getFileConfiguration().getString("language"); }
+
+    public boolean getAllowClearBunchKeysInventory() {
+        return getFileConfiguration().getBoolean("allow_clear_bunch_of_keys_inventory");
+    }
+
+    public int getVerificationPeriod() {
+        return getFileConfiguration().getInt("verification_period");
+    }
 
     public int getMaxAttemptsDamage() {
         int attempts = getFileConfiguration().getInt("max_attempts_to_take_damage");
@@ -117,10 +161,10 @@ public class MainConfiguration {
         return attempts;
     }
 
-    public boolean isEnableResourcePack() { return getFileConfiguration().getBoolean("enable_resourcepack"); }
-
     public String getResourcePackUrl() {
-        return getFileConfiguration().getString("resourcepack_url");
+        if (getFileConfiguration().getString("resourcepack_url") != null)
+            return getFileConfiguration().getString("resourcepack_url").replace("'", "");
+        return "";
     }
 
     public String getItemShape(String item_key) {
@@ -131,9 +175,15 @@ public class MainConfiguration {
         return getFileConfiguration().getString("items." + item_key + ".shape_materials");
     }
 
+    public boolean isEnableDamage() { return getFileConfiguration().getBoolean("enable_damage"); }
+
+    public boolean isEnableResourcePack() { return getFileConfiguration().getBoolean("enable_resourcepack"); }
+
     public boolean isConfigItems(String item_key) {
         return getFileConfiguration().contains("items." + item_key);
     }
+
+    public boolean isEnableLore() { return getFileConfiguration().getBoolean("enable_key_lore"); }
 
     public FileConfiguration getFileConfiguration() {
         return fileConfiguration;

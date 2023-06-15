@@ -3,5 +3,6 @@
 .idea/
 build/
 target/
+photoshop_templates/
 *.iml
 snapshot_classes

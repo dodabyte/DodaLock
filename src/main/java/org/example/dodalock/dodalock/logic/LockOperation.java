@@ -11,6 +11,8 @@ import org.example.dodalock.dodalock.utils.ChatUtils;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class LockOperation {
@@ -41,6 +43,9 @@ public class LockOperation {
                 NamespacedKey key = new NamespacedKey(DodaLockMain.getPlugin(), location);
                 itemMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, uuid.toString());
                 itemMeta.setCustomModelData(3);
+                if (Configurations.getConfig().isEnableLore()) {
+                    itemMeta.setLore(List.of(location));
+                }
                 item.setItemMeta(itemMeta);
 
                 player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()

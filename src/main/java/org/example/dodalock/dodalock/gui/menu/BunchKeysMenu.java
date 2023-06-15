@@ -10,6 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.gui.holders.BunchKeysMenuHolder;
 import org.example.dodalock.dodalock.items.ItemsManager;
+import org.example.dodalock.dodalock.utils.config.Configurations;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BunchKeysMenu extends BunchKeysMenuHolder {
     public BunchKeysMenu(Player player, String idBunchKeys) {
@@ -58,19 +62,36 @@ public class BunchKeysMenu extends BunchKeysMenuHolder {
     }
 
     public void checkInventory() {
-        if (!getInventory().contains(Material.AIR) && !getInventory().contains(ItemsManager.getKey().getItemStack())) {
-            for (ItemStack itemStack : getInventory().getContents()) {
-                if (itemStack != null && !itemStack.getType().equals(Material.AIR) &&
-                        !ItemsManager.isKey(itemStack) && itemStack.getItemMeta() != null) {
-                    ItemMeta itemMeta = itemStack.getItemMeta();
-                    if (!(itemMeta.getPersistentDataContainer().getKeys().size() == 1 &&
-                            itemMeta.getPersistentDataContainer().getKeys().toArray()[0].toString().matches(
-                                    "[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}"))) {
-                        getPlayer().getInventory().addItem(itemStack);
-                        getInventory().remove(itemStack);
-                    }
+        for (ItemStack itemStack : getInventory().getContents()) {
+            if (itemStack != null && !itemStack.getType().equals(Material.AIR) &&
+                    !ItemsManager.isKey(itemStack) && itemStack.getItemMeta() != null) {
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                if (!(itemMeta.getPersistentDataContainer().getKeys().size() == 1 &&
+                        itemMeta.getPersistentDataContainer().getKeys().toArray()[0].toString().matches(
+                        "[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}"))) {
+                    getPlayer().getInventory().addItem(itemStack);
+                    getInventory().remove(itemStack);
                 }
             }
         }
+    }
+
+    public void setLore() {
+        List<String> locationList = new ArrayList<>();
+        for (ItemStack itemStack : getInventory().getContents()) {
+            if (itemStack != null && !itemStack.getType().equals(Material.AIR) &&
+                    !ItemsManager.isKey(itemStack) && itemStack.getItemMeta() != null) {
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                if (itemMeta.getPersistentDataContainer().getKeys().size() == 1 &&
+                        itemMeta.getPersistentDataContainer().getKeys().toArray()[0].toString().matches(
+                                "[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}")) {
+                    locationList.add(itemMeta.getPersistentDataContainer().getKeys().toArray()[0].
+                            toString().split(":")[1]);
+                }
+            }
+        }
+        ItemMeta itemMeta = getPlayer().getInventory().getItemInMainHand().getItemMeta();
+        itemMeta.setLore(locationList);
+        getPlayer().getInventory().getItemInMainHand().setItemMeta(itemMeta);
     }
 }
