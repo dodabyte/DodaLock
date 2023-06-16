@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -18,7 +19,7 @@ public class CustomItem {
 
     public CustomItem(Material material, int customModelData, String key) {
         itemStack = new ItemStack(material);
-        createItemMeta(customModelData, Configurations.getLanguage().translate(key));
+        createItemMeta(customModelData, key);
         if (Configurations.getConfig().isConfigItems(key.split("\\.")[1])) {
             createRecipe(key.split("\\.")[1],
                     Configurations.getConfig().getItemShape(key.split("\\.")[1]),
@@ -26,12 +27,17 @@ public class CustomItem {
         }
     }
 
-    private void createItemMeta(int customModelData, String displayName) {
+    private void createItemMeta(int customModelData, String key) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setCustomModelData(customModelData);
-        itemMeta.setDisplayName(ChatColor.RESET + displayName);
+        itemMeta.setDisplayName(ChatColor.RESET + Configurations.getLanguage().translate(key));
         itemMeta.setUnbreakable(true);
         itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_UNBREAKABLE);
+        if (key.contains("master_key")) {
+            itemMeta.addEnchant(Enchantment.ARROW_KNOCKBACK, 1, true);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            itemMeta.setLore(List.of(Configurations.getLanguage().translate("master_key_lore")));
+        }
         itemStack.setItemMeta(itemMeta);
     }
 

@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.example.dodalock.dodalock.DodaLockMain;
+import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.utils.FormattableUtils;
 
 import java.io.*;
@@ -114,12 +115,12 @@ public class InventoryConfiguration {
 
         if (idBunchKeys != null && !idBunchKeys.equals("") && isBunchKeys(idBunchKeys)) {
             for (ItemStack item : getKeysInBunchKeys(idBunchKeys)) {
-                if (item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer().
+                if (item != null && item.getItemMeta() != null && (item.getItemMeta().getPersistentDataContainer().
                         has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
                         PersistentDataType.STRING) && item.getItemMeta().getPersistentDataContainer().
                         get(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
                         PersistentDataType.STRING).equals(Configurations.getLocks().
-                        getKey(FormattableUtils.getLocationString(location)))) {
+                        getKey(FormattableUtils.getLocationString(location)))) || ItemsManager.isMasterKey(item)) {
                     isTrueKeysInBunch = true;
                     break;
                 }

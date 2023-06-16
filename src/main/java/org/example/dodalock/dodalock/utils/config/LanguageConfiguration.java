@@ -64,6 +64,11 @@ public class LanguageConfiguration {
                         ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
                         itemMeta.setDisplayName(ChatColor.RESET + translate("items_name.key"));
                         player.getInventory().getItem(i).setItemMeta(itemMeta);
+                    } else if (ItemsManager.isMasterKey(player.getInventory().getItem(i))) {
+                        ItemMeta itemMeta = player.getInventory().getItem(i).getItemMeta();
+                        itemMeta.setDisplayName(translate("items_name.master_key"));
+                        itemMeta.setLore(List.of(translate("master_key_lore")));
+                        player.getInventory().getItem(i).setItemMeta(itemMeta);
                     } else if (ItemsManager.isBunchKeys(player.getInventory().getItem(i)) ||
                             (player.getInventory().getItem(i).getItemMeta() != null &&
                             player.getInventory().getItem(i).getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&

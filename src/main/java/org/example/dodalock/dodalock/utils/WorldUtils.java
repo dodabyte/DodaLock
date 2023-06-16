@@ -1,11 +1,17 @@
 package org.example.dodalock.dodalock.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.DoubleChestInventory;
+import org.example.dodalock.dodalock.utils.config.Configurations;
 
 
 public class WorldUtils {
@@ -14,7 +20,8 @@ public class WorldUtils {
     }
     
     public static boolean isDoor(Block block) {
-        return block.getType().toString().contains("DOOR") && !block.getType().toString().contains("IRON");
+        return block.getType().toString().contains("DOOR") && !block.getType().toString().contains("IRON") &&
+                !block.getType().toString().contains("TRAPDOOR");
     }
 
     public static boolean isTrapdoor(Block block) {

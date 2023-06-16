@@ -3,6 +3,7 @@
 .idea/
 build/
 target/
+beta_files/
 photoshop_templates/
 *.iml
 snapshot_classes

@@ -1,10 +1,12 @@
 package org.example.dodalock.dodalock.items;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.persistence.PersistentDataType;
+import org.example.dodalock.dodalock.DodaLockMain;
+import org.example.dodalock.dodalock.utils.FormattableUtils;
 import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class ItemsManager {
@@ -14,6 +16,7 @@ public class ItemsManager {
     private static CustomItem codeLock;
     private static CustomItem lock;
     private static CustomItem key;
+    private static CustomItem masterKey;
     private static CustomItem bunchKeys;
 
     public static void initializeItems() {
@@ -21,6 +24,8 @@ public class ItemsManager {
         lock = new CustomItem(locksMaterial, 2, "items_name.lock");
         key = new CustomItem(keysMaterial, 1, "items_name.key");
         bunchKeys = new CustomItem(keysMaterial, 2, "items_name.bunch_of_keys");
+        if (Configurations.getConfig().isEnableMasterKey())
+            masterKey = new CustomItem(keysMaterial, 3, "items_name.master_key");
     }
 
     public static CustomItem getCodeLock() { return codeLock; }
@@ -30,6 +35,8 @@ public class ItemsManager {
     public static CustomItem getKey() { return key; }
 
     public static CustomItem getBunchKeys() { return bunchKeys; }
+
+    public static CustomItem getMasterKey() { return masterKey; }
 
     public static boolean isCodeLock(ItemStack itemStack) {
         return itemStack != null && itemStack.getType().equals(getCodeLock().getItemStack().getType()) &&
@@ -47,8 +54,36 @@ public class ItemsManager {
                 itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getKey().getItemStack().getItemMeta());
     }
 
+    public static boolean isUsedKey(ItemStack itemStack, Location location) {
+        return itemStack != null && itemStack.getItemMeta() != null &&
+                itemStack.getItemMeta().getPersistentDataContainer().
+                has(new NamespacedKey(DodaLockMain.getPlugin(), FormattableUtils.getLocationString(location)),
+                PersistentDataType.STRING) && itemStack.getItemMeta().
+                getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
+                FormattableUtils.getLocationString(location)), PersistentDataType.STRING).
+                equals(Configurations.getLocks().getKey(FormattableUtils.getLocationString(location)));
+    }
+
+    public static boolean isUsedBunchKeys(ItemStack itemStack) {
+        return itemStack != null && itemStack.getItemMeta() != null &&
+                itemStack.getItemMeta().getPersistentDataContainer().
+                has(new NamespacedKey(DodaLockMain.getPlugin(), "bunch_of_keys"), PersistentDataType.STRING);
+    }
+
+    public static String getDataUsedBunchKeys(ItemStack itemStack) {
+        if (itemStack != null && itemStack.getItemMeta() != null)
+            return itemStack.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(DodaLockMain.getPlugin(),
+                        "bunch_of_keys"), PersistentDataType.STRING);
+        return null;
+    }
+
     public static boolean isBunchKeys(ItemStack itemStack) {
         return itemStack != null && itemStack.getType().equals(getBunchKeys().getItemStack().getType()) &&
                 itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getBunchKeys().getItemStack().getItemMeta());
+    }
+
+    public static boolean isMasterKey(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().equals(getBunchKeys().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getMasterKey().getItemStack().getItemMeta());
     }
 }

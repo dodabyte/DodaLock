@@ -2,7 +2,9 @@ items_name:
   code_lock: 'Кодовый замок'
   lock : 'Замок'
   key: 'Ключ'
+  master_key: 'Мастер ключ'
   bunch_of_keys: 'Связка ключей'
+master_key_lore: 'Откроет любые запертые двери.'
 gui:
   number_1: '1'
   number_2: '2'

@@ -29,7 +29,7 @@ public class LockOperation {
                     ChatUtils.printMessage(player, "success.installing_lock");
                 }
             }
-            // Замок имеется на двери, при этом у игрока в руках ключ или связка ключей,
+            // Замок имеется на двери, при этом у игрока в руках ключ,
             // а ранее ключ не был записан -> запись ключа
             else if (Configurations.getLocks().isLock(location) &&
                     ItemsManager.isKey(player.getEquipment().getItemInMainHand()) &&

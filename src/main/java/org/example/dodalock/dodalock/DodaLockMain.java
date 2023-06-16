@@ -43,7 +43,7 @@ public final class DodaLockMain extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new LocksListener(), this);
         this.getServer().getPluginManager().registerEvents(new BunchKeysListener(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        //this.getServer().getPluginManager().registerEvents(new KeyCloneCraftListener(), this);
+        this.getServer().getPluginManager().registerEvents(new CheckPlayerActionsListener(), this);
     }
 
     private void registerCommands() {

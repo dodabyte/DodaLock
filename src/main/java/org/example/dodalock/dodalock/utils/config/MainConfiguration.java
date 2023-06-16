@@ -38,6 +38,7 @@ public class MainConfiguration {
         setClearBunchKeysInventory();
         setLore();
         setDamage();
+        setMasterKey();
         setResourcePack();
         setCustomItemsOptions();
     }
@@ -93,6 +94,11 @@ public class MainConfiguration {
         getFileConfiguration().set("items.key.shape", "%, $");
         getFileConfiguration().set("items.key.shape_materials", "%: IRON_INGOT, $: LEVER");
 
+        // Мастер ключ
+        getFileConfiguration().createSection("items.master_key");
+        getFileConfiguration().set("items.master_key.shape", "%, $");
+        getFileConfiguration().set("items.master_key.shape_materials", "%: IRON_INGOT, $: COMMAND_BLOCK");
+
         // Связка ключей
         getFileConfiguration().createSection("items.bunch_of_keys");
         getFileConfiguration().set("items.bunch_of_keys.shape", "-$-, $%$, -$-");
@@ -110,8 +116,10 @@ public class MainConfiguration {
         getFileConfiguration().setComments("items.lock.shape_materials", List.of("Default: %: IRON_INGOT"));
         getFileConfiguration().setComments("items.key.shape", List.of("Default: %, $"));
         getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_INGOT, $: LEVER"));
+        getFileConfiguration().setComments("items.master_key.shape", List.of("Default: %, $"));
+        getFileConfiguration().setComments("items.master_key.shape_materials", List.of("Default: %: IRON_INGOT, $: COMMAND_BLOCK"));
         getFileConfiguration().setComments("items.bunch_of_keys.shape", List.of("Default: -$-, $%$, -$-"));
-        getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_INGOT, $: STRING"));
+        getFileConfiguration().setComments("items.bunch_of_keys.shape_materials", List.of("Default: %: IRON_INGOT, $: STRING"));
     }
 
     private void setResourcePack() {
@@ -143,6 +151,13 @@ public class MainConfiguration {
         getFileConfiguration().setComments("enable_key_lore",
                 List.of("", "", "Setting enable a lore for keys and a bunch of keys, displaying the coordinates of the lock " +
                         "that the key or keys are associated with. Default: true"));
+    }
+
+    private void setMasterKey() {
+        getFileConfiguration().set("enable_master_key", true);
+
+        getFileConfiguration().setComments("enable_master_key",
+                List.of("", "", "The setting allows you to use a universal key for administrators. Default: true"));
     }
 
     public String getLanguage() { return getFileConfiguration().getString("language"); }
@@ -181,6 +196,10 @@ public class MainConfiguration {
 
     public boolean isConfigItems(String item_key) {
         return getFileConfiguration().contains("items." + item_key);
+    }
+
+    public boolean isEnableMasterKey() {
+        return getFileConfiguration().getBoolean("enable_master_key");
     }
 
     public boolean isEnableLore() { return getFileConfiguration().getBoolean("enable_key_lore"); }

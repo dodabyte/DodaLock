@@ -2,7 +2,9 @@ items_name:
   code_lock: 'Code lock'
   lock : 'Lock'
   key: 'Key'
+  master_key: 'Master key'
   bunch_of_keys: 'Bunch of keys'
+master_key_lore: 'Will open any locked doors.'
 gui:
   plug: ''
   number_1: '1'

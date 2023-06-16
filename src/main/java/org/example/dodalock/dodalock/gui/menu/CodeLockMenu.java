@@ -1,7 +1,5 @@
 package org.example.dodalock.dodalock.gui.menu;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -66,10 +64,10 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                 if (!Configurations.getLocks().isCodeLock(location)) {
                                     Configurations.getLocks().addCodeLock(password, player, location);
                                     if (ItemsManager.isCodeLock(player.getEquipment().getItemInMainHand()) &&
-                                        player.getEquipment().getItemInMainHand().getAmount() > 0) {
-                                            player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()
-                                                    .getItemInMainHand().getAmount() - 1);
-                                            player.updateInventory();
+                                            player.getEquipment().getItemInMainHand().getAmount() > 0) {
+                                        player.getEquipment().getItemInMainHand().setAmount(player.getEquipment()
+                                                .getItemInMainHand().getAmount() - 1);
+                                        player.updateInventory();
                                     }
                                     password = "";
                                     player.closeInventory();
@@ -99,10 +97,10 @@ public class CodeLockMenu extends CodeLockMenuHolder {
                                                 player.damage(6);
                                                 ChatUtils.printMessage(player, "error.damage_for_exceeding_attempts");
                                             } else
-                                                ChatUtils.printError(player,
-                                                    Configurations.getLanguage().
+                                                ChatUtils.printError(player, Configurations.getLanguage().
                                                     translate("error.invalid_password_with_attempts") +
-                                                    (Configurations.getConfig().getMaxAttemptsDamage() - CheckPlayersAttempts.getAttempts(location, player)));
+                                                    (Configurations.getConfig().getMaxAttemptsDamage() -
+                                                            CheckPlayersAttempts.getAttempts(location, player)));
                                         }
                                 }
                                 // Кодовый замок имеется на двери, игрок уже открывал дверь, при этом

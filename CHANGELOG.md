@@ -1,5 +1,26 @@
 # Changelog
 
+## v1.0 - 16.16.2023
+
+_Prerelease update. On the way to the first release._
+
+### Added
+
+- _A master key for administrators that allows you to open 
+all locked doors._
+- _A ban on the use of keys and a bunch of keys in the workbench 
+in crafting, in the furnace as fuel and in the enchantment table._
+
+### Changed
+
+- _Changed the structure of "if" checks._
+
+### Fixed
+
+- _Removing the locks and the code locks on the left click 
+did not work quite right._
+- 
+
 ## v1.0 - 15.06.2023
 
 _Config updates and code refinement._
