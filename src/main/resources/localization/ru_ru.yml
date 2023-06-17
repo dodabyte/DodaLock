@@ -28,6 +28,7 @@ help:
   remove_command: 'Удаление замка.'
   clear_command: 'Удаление всех замков.'
   clone_command: 'Клонировать ключ, находящийся в главной руке.'
+  give_command: 'Выдать один из пользовательских предметов плагина.'
   reload_command: 'Перезагрузка плагина.'
 data:
   code_locks_list: 'DodaLock Список кодовых замков'

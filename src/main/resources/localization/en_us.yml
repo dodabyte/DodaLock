@@ -28,6 +28,7 @@ help:
   remove_command: 'Removing the lock.'
   clear_command: 'Removing all locks.'
   clone_command: 'Clone the key that is in the main hand.'
+  give_command: 'Give one of the custom plugin items.'
   reload_command: 'Reloading the plugin.'
 data:
   code_locks_list: 'DodaLock сode locks List'

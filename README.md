@@ -10,8 +10,8 @@ Spigot plugin adds locks and code locks for doors, trapdoors, barrels and chests
 * The ability to use both ordinary and code locks.
 * A code lock, an ordinary lock, a key to it and a bunch of keys has
   their own craft.
-* Compatible with the new blocks of Minecraft version 1.19.4
-  (even cherry wood).
+* Compatible with new Minecraft 1.20
+  items (even with cherry tree items version 1.19).
 * There is localization into english and russian languages.
 * Open-source (GNU GPL v3 license).
 
@@ -35,6 +35,8 @@ ordinary lock, it is necessary to hold the key in your hands.
 
 ## Video
 
+_Coming soon._
+
 A video with instructions for use is on my YouTube channel 
 at this link.
 
@@ -45,10 +47,28 @@ then I ask you to send it to me.
 
 This is documentation for DodaLock v1.0 plugin.
 
+### Crafting recipes
+
+_Coming soon._
+
 ### Commands
 
 To work with the plugin in the game, you need to enter the command 
 `/dodalock` or `/dl`
+
+`/dodalock help` - Calling help to the plugin.
+
+`/dodalock list [all | codelocks | locks]` - Getting a list of installed locks.
+
+`/dodalock remove [codelock | lock] [number | location]` - Removing the lock.
+
+`/dodalock clear [all | codelock | lock]` - Removing all locks.
+
+`/dodalock clone` - Clone the key that is in the main hand.
+
+`/dodalock give [codelock | lock | key | masterkey | bunchofkeys]` - Give one of the custom plugin items.
+
+`/dodalock reload` - Reloading the plugin.
 
 ### Server Compatibility
 
