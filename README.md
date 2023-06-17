@@ -70,6 +70,10 @@ To work with the plugin in the game, you need to enter the command
 
 `/dodalock reload` - Reloading the plugin.
 
+### Permissions
+
+_Coming soon._
+
 ### Server Compatibility
 
 This plugin is compatible with Spigot. 
