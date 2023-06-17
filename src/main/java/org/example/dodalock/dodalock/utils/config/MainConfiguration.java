@@ -6,7 +6,6 @@ import org.example.dodalock.dodalock.DodaLockMain;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainConfiguration {
@@ -86,8 +85,8 @@ public class MainConfiguration {
 
         // Замок
         getFileConfiguration().createSection("items.lock");
-        getFileConfiguration().set("items.lock.shape", "%%, %%");
-        getFileConfiguration().set("items.lock.shape_materials", "%: IRON_INGOT");
+        getFileConfiguration().set("items.lock.shape", "-$-, %%%, %%%");
+        getFileConfiguration().set("items.lock.shape_materials", "$: STRING, %: IRON_INGOT");
 
         // Ключ
         getFileConfiguration().createSection("items.key");

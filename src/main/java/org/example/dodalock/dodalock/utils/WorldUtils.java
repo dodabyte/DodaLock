@@ -1,17 +1,11 @@
 package org.example.dodalock.dodalock.utils;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.type.Door;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.DoubleChestInventory;
-import org.example.dodalock.dodalock.utils.config.Configurations;
 
 
 public class WorldUtils {
@@ -44,7 +38,7 @@ public class WorldUtils {
     public static Location getLocation(Block block) {
         if (block != null) {
             if (WorldUtils.isDoor(block)) {
-                // Ведущим блоков у двери является её нижняя часть (нижний блок)
+                // Ведущим блоком у двери является её нижняя часть (нижний блок)
                 Door door = (Door) block.getBlockData();
                 if (door.getHalf().equals(Bisected.Half.BOTTOM))
                     return block.getLocation();

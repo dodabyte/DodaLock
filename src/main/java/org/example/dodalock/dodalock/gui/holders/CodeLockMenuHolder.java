@@ -1,7 +1,6 @@
 package org.example.dodalock.dodalock.gui.holders;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;

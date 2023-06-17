@@ -2,7 +2,6 @@ package org.example.dodalock.dodalock.gui;
 
 import org.bukkit.Material;
 import org.example.dodalock.dodalock.items.CustomItem;
-import org.example.dodalock.dodalock.utils.config.Configurations;
 
 public class GuiItemsManager {
     private static final Material material = Material.SHULKER_SHELL;

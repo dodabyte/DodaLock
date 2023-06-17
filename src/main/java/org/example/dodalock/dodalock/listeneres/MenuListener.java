@@ -2,10 +2,7 @@ package org.example.dodalock.dodalock.listeneres;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.example.dodalock.dodalock.gui.holders.BunchKeysMenuHolder;
 import org.example.dodalock.dodalock.gui.holders.CodeLockMenuHolder;

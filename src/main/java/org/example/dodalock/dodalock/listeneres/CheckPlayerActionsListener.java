@@ -3,23 +3,18 @@ package org.example.dodalock.dodalock.listeneres;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.example.dodalock.dodalock.items.ItemsManager;
-import org.example.dodalock.dodalock.utils.FormattableUtils;
+import org.example.dodalock.dodalock.utils.ChatUtils;
 import org.example.dodalock.dodalock.utils.WorldUtils;
-import org.example.dodalock.dodalock.utils.config.Configurations;
-
-import java.util.List;
 
 public class CheckPlayerActionsListener implements Listener {
     @EventHandler
@@ -63,6 +58,13 @@ public class CheckPlayerActionsListener implements Listener {
                             toArray()[0].toString().contains("dodalock:bunch_of_keys")))) {
                         event.setCancelled(true);
                     }
+                }
+            }
+            if (ItemsManager.isMasterKey(event.getRecipe().getResult())) {
+                Player player = (Player) event.getWhoClicked();
+                if (!player.hasPermission("dodalock.craft.masterkey")) {
+                    event.setCancelled(true);
+                    ChatUtils.printMessage(player, "error.permission_craft_master_key");
                 }
             }
         }

@@ -1,9 +1,9 @@
 name: DodaLock
 version: '${project.version}'
 main: org.example.dodalock.dodalock.DodaLockMain
-api-version: 1.19
-authors: [ dodabyte ]
-description: The plugin adds the ability to close doors, trapdoors and chests with a lock or combination lock.
+api-version: '1.19'
+author: dodabyte
+description: The plugin adds the ability to close doors, trapdoors, chests and barrels with a lock or code lock.
 website: https://github.com/dodabyte
 commands:
   dodalock:

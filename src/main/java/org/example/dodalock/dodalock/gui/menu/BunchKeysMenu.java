@@ -2,15 +2,12 @@ package org.example.dodalock.dodalock.gui.menu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.gui.holders.BunchKeysMenuHolder;
 import org.example.dodalock.dodalock.items.ItemsManager;
-import org.example.dodalock.dodalock.utils.config.Configurations;
 
 import java.util.ArrayList;
 import java.util.List;

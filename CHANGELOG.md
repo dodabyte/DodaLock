@@ -1,5 +1,24 @@
 # Changelog
 
+## v1.0 - 17.16.2023
+
+_Release update. Whoopee!!!_
+
+### Added
+
+- _Permission for crafting a master key._
+- _Commands for getting items._
+
+### Changed
+
+- _Some checks were moved to a separate method
+because they were often repeated._
+
+### Fixed
+
+- _Incorrect error display when using extra arguments 
+in the command._
+
 ## v1.0 - 16.16.2023
 
 _Prerelease update. On the way to the first release._
@@ -19,7 +38,6 @@ in crafting, in the furnace as fuel and in the enchantment table._
 
 - _Removing the locks and the code locks on the left click 
 did not work quite right._
-- 
 
 ## v1.0 - 15.06.2023
 

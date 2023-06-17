@@ -1,12 +1,5 @@
 package org.example.dodalock.dodalock.utils.config;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.example.dodalock.dodalock.DodaLockMain;
-
-import java.io.File;
-import java.io.IOException;
-
 public class Configurations {
     private static MainConfiguration CONFIG;
     private static LanguageConfiguration LANGUAGE;

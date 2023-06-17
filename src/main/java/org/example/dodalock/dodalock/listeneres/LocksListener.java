@@ -2,7 +2,6 @@ package org.example.dodalock.dodalock.listeneres;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +10,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.persistence.PersistentDataType;
-import org.example.dodalock.dodalock.DodaLockMain;
 import org.example.dodalock.dodalock.gui.menu.CodeLockMenu;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.logic.LockOperation;
@@ -89,8 +86,9 @@ public class LocksListener implements Listener {
                         // -> отмена открытия двери
                         if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location)) &&
                                 !Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.
-                                        getLocationString(location), player) &&
-                                !ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand())) {
+                                getLocationString(location), player) &&
+                                !ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand()) &&
+                                !ItemsManager.isMasterKey(player.getEquipment().getItemInOffHand())) {
                             event.setCancelled(true);
                             ChatUtils.printMessage(player, "error.open_object_with_code_lock");
                         }
@@ -101,7 +99,10 @@ public class LocksListener implements Listener {
                                 Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
                                 !ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand()) &&
                                 !ItemsManager.isUsedKey(player.getEquipment().getItemInMainHand(), location) &&
-                                !ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand())) {
+                                !ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
+                                !ItemsManager.isMasterKey(player.getEquipment().getItemInOffHand()) &&
+                                !ItemsManager.isUsedKey(player.getEquipment().getItemInOffHand(), location) &&
+                                !ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInOffHand())) {
                             event.setCancelled(true);
                             ChatUtils.printMessage(player, "error.open_object_with_lock");
                         }
@@ -109,9 +110,12 @@ public class LocksListener implements Listener {
                         // ключа от данного замка или мастер ключа -> отмена открытия двери
                         else if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
                                 Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
-                                ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
+                                ((ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
                                 !Configurations.getInventory().checkDoorWithBunchKeys(location,
-                                ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInMainHand()))) {
+                                ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInMainHand()))) ||
+                                (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInOffHand()) &&
+                                !Configurations.getInventory().checkDoorWithBunchKeys(location,
+                                ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInOffHand()))))) {
                             event.setCancelled(true);
                             ChatUtils.printMessage(player, "error.open_object_with_lock");
                         }
@@ -122,27 +126,46 @@ public class LocksListener implements Listener {
                 else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
                     if (player.isSneaking()) {
                         // Удаление кодового замка из конфига и его снятие с двери
-                        if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location)) &&
-                                Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.getLocationString(location), player)) {
-                            event.setCancelled(true);
-                            Configurations.getLocks().removeCodeLock(FormattableUtils.getLocationString(location));
-                            location.getWorld().dropItem(location, ItemsManager.getCodeLock().getItemStack());
-                            ChatUtils.printMessage(player, "success.remove_code_lock");
+                        if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
+                            if (Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.getLocationString(location), player)) {
+                                event.setCancelled(true);
+                                Configurations.getLocks().removeCodeLock(FormattableUtils.getLocationString(location));
+                                location.getWorld().dropItem(location, ItemsManager.getCodeLock().getItemStack());
+                                ChatUtils.printMessage(player, "success.remove_code_lock");
+                            }
+                            else {
+                                ChatUtils.printMessage(player, "error.remove_code_lock");
+                            }
                         }
 
                         // Удаление замка из конфига и его снятие с двери
-                        if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location)) &&
-                                Configurations.getLocks().isKey(FormattableUtils.getLocationString(location)) &&
-                                player.getEquipment().getItemInMainHand().getItemMeta() != null &&
-                                (ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand()) ||
-                                ItemsManager.isUsedKey(player.getEquipment().getItemInMainHand(), location) ||
-                                (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
-                                Configurations.getInventory().checkDoorWithBunchKeys(location,
-                                ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInMainHand()))))) {
-                            event.setCancelled(true);
-                            Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
-                            location.getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
-                            ChatUtils.printMessage(player, "success.remove_lock");
+                        if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location))) {
+                            if (Configurations.getLocks().isKey(FormattableUtils.getLocationString(location))) {
+                                if (ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand()) ||
+                                        ItemsManager.isMasterKey(player.getEquipment().getItemInOffHand()) ||
+                                        ItemsManager.isUsedKey(player.getEquipment().getItemInMainHand(), location) ||
+                                        ItemsManager.isUsedKey(player.getEquipment().getItemInOffHand(), location) ||
+                                        (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
+                                        Configurations.getInventory().checkDoorWithBunchKeys(location,
+                                        ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInMainHand()))) ||
+                                        (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInOffHand()) &&
+                                        Configurations.getInventory().checkDoorWithBunchKeys(location,
+                                        ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInOffHand())))) {
+                                    event.setCancelled(true);
+                                    Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
+                                    location.getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
+                                    ChatUtils.printMessage(player, "success.remove_lock");
+                                }
+                                else {
+                                    ChatUtils.printMessage(player, "error.remove_lock");
+                                }
+                            }
+                            else {
+                                event.setCancelled(true);
+                                Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
+                                location.getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
+                                ChatUtils.printMessage(player, "success.remove_lock");
+                            }
                         }
                         Configurations.getLocks().save();
                         Configurations.getLocks().reload();
@@ -155,29 +178,40 @@ public class LocksListener implements Listener {
     @EventHandler
     public void onDoorBreak(BlockBreakEvent event) {
         if (WorldUtils.isTrueTypes(event.getBlock())) {
+            Player player = event.getPlayer();
             Location location = WorldUtils.getLocation(event.getBlock());
 
             if (location != null) {
                 if (Configurations.getLocks().isCodeLock(FormattableUtils.getLocationString(location))) {
-                    if (Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.getLocationString(location), event.getPlayer())) {
+                    if (Configurations.getLocks().isPlayerInCodeLock(FormattableUtils.getLocationString(location), player)) {
                         Configurations.getLocks().removeCodeLock(FormattableUtils.getLocationString(location));
                         event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getCodeLock().getItemStack());
+                        ChatUtils.printMessage(player, "success.remove_code_lock");
                     }
                     else {
                         event.setCancelled(true);
-                        // TODO Вывод ошибки
+                        ChatUtils.printMessage(player, "error.break_door_with_code_lock");
                     }
                 }
 
                 if (Configurations.getLocks().isLock(FormattableUtils.getLocationString(location))) {
-                    if (ItemsManager.isUsedKey(event.getPlayer().getEquipment().getItemInMainHand(), location) ||
-                            ItemsManager.isUsedKey(event.getPlayer().getEquipment().getItemInOffHand(), location)) {
+                    if (ItemsManager.isUsedKey(player.getEquipment().getItemInMainHand(), location) ||
+                            ItemsManager.isUsedKey(player.getEquipment().getItemInOffHand(), location) ||
+                            ItemsManager.isMasterKey(player.getEquipment().getItemInMainHand()) ||
+                            ItemsManager.isMasterKey(player.getEquipment().getItemInOffHand()) ||
+                            (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInMainHand()) &&
+                            Configurations.getInventory().checkDoorWithBunchKeys(location,
+                            ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInMainHand()))) ||
+                            (ItemsManager.isUsedBunchKeys(player.getEquipment().getItemInOffHand()) &&
+                            Configurations.getInventory().checkDoorWithBunchKeys(location,
+                            ItemsManager.getDataUsedBunchKeys(player.getEquipment().getItemInOffHand())))) {
                         Configurations.getLocks().removeLock(FormattableUtils.getLocationString(location));
                         event.getBlock().getLocation().getWorld().dropItem(location, ItemsManager.getLock().getItemStack());
+                        ChatUtils.printMessage(player, "success.remove_lock");
                     }
                     else {
                         event.setCancelled(true);
-                        // TODO Вывод ошибки
+                        ChatUtils.printMessage(player, "error.break_door_with_lock");
                     }
                 }
                 Configurations.getLocks().save();

@@ -1,13 +1,10 @@
 package org.example.dodalock.dodalock.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.example.dodalock.dodalock.DodaLockMain;
 import org.example.dodalock.dodalock.items.ItemsManager;
 import org.example.dodalock.dodalock.utils.ChatUtils;
@@ -41,13 +38,15 @@ public class GlobalCommands implements CommandExecutor {
                 return true;
             }
             else if (args.length > 2) {
-                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                StringBuilder enteredCommand = new StringBuilder(label);
                 for (String arg : args) {
                     enteredCommand.append(" ").append(arg);
                 }
-                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
-                enteredCommand.append("<--[").append(here).append("]");
-                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                String here = Configurations.getLanguage().translate("error.here");
+                enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                ChatUtils.printError(player,
+                        Configurations.getLanguage().translate("error.invalid_argument") +
+                                ":\n" + enteredCommand);
                 return true;
             }
 
@@ -76,13 +75,15 @@ public class GlobalCommands implements CommandExecutor {
                 return true;
             }
             else if (args.length > 3) {
-                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                StringBuilder enteredCommand = new StringBuilder(label);
                 for (String arg : args) {
                     enteredCommand.append(" ").append(arg);
                 }
-                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
-                enteredCommand.append("<--[").append(here).append("]");
-                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                String here = Configurations.getLanguage().translate("error.here");
+                enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                ChatUtils.printError(player,
+                        Configurations.getLanguage().translate("error.invalid_argument") +
+                                ":\n" + enteredCommand);
                 return true;
             }
 
@@ -141,13 +142,15 @@ public class GlobalCommands implements CommandExecutor {
                 return true;
             }
             else if (args.length > 2) {
-                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                StringBuilder enteredCommand = new StringBuilder(label);
                 for (String arg : args) {
                     enteredCommand.append(" ").append(arg);
                 }
-                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
-                enteredCommand.append("<--[").append(here).append("]");
-                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                String here = Configurations.getLanguage().translate("error.here");
+                enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                ChatUtils.printError(player,
+                        Configurations.getLanguage().translate("error.invalid_argument") +
+                                ":\n" + enteredCommand);
                 return true;
             }
 
@@ -186,13 +189,15 @@ public class GlobalCommands implements CommandExecutor {
 
         if (args[0].equalsIgnoreCase("clone")) {
             if (args.length > 1) {
-                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                StringBuilder enteredCommand = new StringBuilder(label);
                 for (String arg : args) {
                     enteredCommand.append(" ").append(arg);
                 }
-                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
-                enteredCommand.append("<--[").append(here).append("]");
-                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                String here = Configurations.getLanguage().translate("error.here");
+                enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                ChatUtils.printError(player,
+                        Configurations.getLanguage().translate("error.invalid_argument") +
+                                ":\n" + enteredCommand);
                 return true;
             }
 
@@ -211,15 +216,86 @@ public class GlobalCommands implements CommandExecutor {
             return true;
         }
 
+        if (player.hasPermission("dodalock.give")) {
+            if (args[0].equalsIgnoreCase("give")) {
+                if (args.length < 2) {
+                    ChatUtils.printMessage(player, "error.name_item_missing");
+                    return true;
+                } else if (args.length > 2) {
+                    StringBuilder enteredCommand = new StringBuilder(label);
+                    for (String arg : args) {
+                        enteredCommand.append(" ").append(arg);
+                    }
+                    String here = Configurations.getLanguage().translate("error.here");
+                    enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                    ChatUtils.printError(player,
+                            Configurations.getLanguage().translate("error.invalid_argument") +
+                                    ":\n" + enteredCommand);
+                    return true;
+                }
+
+                if (args[1].equalsIgnoreCase("key")) {
+                    if (player.hasPermission("dodalock.give.key")) {
+                        player.getInventory().addItem(ItemsManager.getKey().getItemStack());
+                    }
+                    else {
+                        ChatUtils.printMessage(player, "error.permission_give_command");
+                    }
+                }
+                else if (args[1].equalsIgnoreCase("masterkey")) {
+                    if (player.hasPermission("dodalock.give.masterkey")) {
+                        player.getInventory().addItem(ItemsManager.getMasterKey().getItemStack());
+                    }
+                    else {
+                        ChatUtils.printMessage(player, "error.permission_give_command");
+                    }
+                }
+                else if (args[1].equalsIgnoreCase("lock")) {
+                    if (player.hasPermission("dodalock.give.lock")) {
+                        player.getInventory().addItem(ItemsManager.getLock().getItemStack());
+                    }
+                    else {
+                        ChatUtils.printMessage(player, "error.permission_give_command");
+                    }
+                }
+                else if (args[1].equalsIgnoreCase("codelock")) {
+                    if (player.hasPermission("dodalock.give.codelock")) {
+                        player.getInventory().addItem(ItemsManager.getCodeLock().getItemStack());
+                    }
+                    else {
+                        ChatUtils.printMessage(player, "error.permission_give_command");
+                    }
+                }
+                else if (args[1].equalsIgnoreCase("bunchofkeys")) {
+                    if (player.hasPermission("dodalock.give.bunchofkeys")) {
+                        player.getInventory().addItem(ItemsManager.getBunchKeys().getItemStack());
+                    }
+                    else {
+                        ChatUtils.printMessage(player, "error.permission_give_command");
+                    }
+                }
+                else {
+                    ChatUtils.printMessage(player, "error.name_item_not_exist");
+                }
+                return true;
+            }
+        }
+        else {
+            ChatUtils.printMessage(player, "error.permission_give_command");
+            return true;
+        }
+
         if (args[0].equalsIgnoreCase("reload")) {
             if (args.length > 1) {
-                StringBuilder enteredCommand = new StringBuilder("/" + label);
+                StringBuilder enteredCommand = new StringBuilder(label);
                 for (String arg : args) {
                     enteredCommand.append(" ").append(arg);
                 }
-                String here = ChatColor.ITALIC + Configurations.getLanguage().translate("error.here");
-                enteredCommand.append("<--[").append(here).append("]");
-                ChatUtils.printMessage(player, "error.invalid_argument" + ":\n" + enteredCommand);
+                String here = Configurations.getLanguage().translate("error.here");
+                enteredCommand.append(ChatColor.ITALIC).append("<--[").append(here).append("]");
+                ChatUtils.printError(player,
+                        Configurations.getLanguage().translate("error.invalid_argument") +
+                                ":\n" + enteredCommand);
                 return true;
             }
 
