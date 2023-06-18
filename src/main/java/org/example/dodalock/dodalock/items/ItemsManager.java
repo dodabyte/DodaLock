@@ -89,7 +89,10 @@ public class ItemsManager {
     }
 
     public static boolean isMasterKey(ItemStack itemStack) {
-        return itemStack != null && itemStack.getType().equals(getBunchKeys().getItemStack().getType()) &&
-                itemStack.getItemMeta() != null && itemStack.getItemMeta().equals(getMasterKey().getItemStack().getItemMeta());
+        return itemStack != null && getMasterKey() != null && getMasterKey().getItemStack() != null &&
+                getMasterKey().getItemStack().getItemMeta() != null &&
+                itemStack.getType().equals(getMasterKey().getItemStack().getType()) &&
+                itemStack.getItemMeta() != null &&
+                itemStack.getItemMeta().equals(getMasterKey().getItemStack().getItemMeta());
     }
 }
