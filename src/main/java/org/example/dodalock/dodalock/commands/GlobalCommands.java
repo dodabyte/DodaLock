@@ -1,5 +1,6 @@
 package org.example.dodalock.dodalock.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -201,11 +202,9 @@ public class GlobalCommands implements CommandExecutor {
                 return true;
             }
 
-            if (player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
-                    player.getEquipment().getItemInMainHand().getItemMeta().getPersistentDataContainer().getKeys().
-                    toArray()[0].toString().matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}")) {
+            if (ItemsManager.isUsedKey(player.getEquipment().getItemInMainHand())) {
                 if (player.getInventory().contains(ItemsManager.getKey().getItemStack())) {
-                    player.getInventory().remove(ItemsManager.getKey().getItemStack());
+                    player.getInventory().removeItem(ItemsManager.getKey().getItemStack());
                     player.getInventory().addItem(player.getEquipment().getItemInMainHand().clone());
                     ChatUtils.printMessage(player, "success.key_clone");
                 }
@@ -213,15 +212,23 @@ public class GlobalCommands implements CommandExecutor {
                     ChatUtils.printMessage(player, "error.ordinary_key_for_clone_not_exist");
                 }
             }
+            else {
+                ChatUtils.printMessage(player, "error.item_clone");
+            }
             return true;
         }
 
         if (player.hasPermission("dodalock.give")) {
             if (args[0].equalsIgnoreCase("give")) {
                 if (args.length < 2) {
+                    ChatUtils.printMessage(player, "error.player_nickname_missing");
+                    return true;
+                }
+                else if (args.length < 3) {
                     ChatUtils.printMessage(player, "error.name_item_missing");
                     return true;
-                } else if (args.length > 2) {
+                }
+                else if (args.length > 3) {
                     StringBuilder enteredCommand = new StringBuilder(label);
                     for (String arg : args) {
                         enteredCommand.append(" ").append(arg);
@@ -234,41 +241,47 @@ public class GlobalCommands implements CommandExecutor {
                     return true;
                 }
 
-                if (args[1].equalsIgnoreCase("key")) {
+                Player enterPlayer = Bukkit.getPlayer(args[1]);
+                if (enterPlayer == null || !Bukkit.getOnlinePlayers().contains(enterPlayer)) {
+                    ChatUtils.printMessage(player, "error.player_not_exist");
+                    return true;
+                }
+
+                if (args[2].equalsIgnoreCase("key")) {
                     if (player.hasPermission("dodalock.give.key")) {
-                        player.getInventory().addItem(ItemsManager.getKey().getItemStack());
+                        enterPlayer.getInventory().addItem(ItemsManager.getKey().getItemStack());
                     }
                     else {
                         ChatUtils.printMessage(player, "error.permission_give_command");
                     }
                 }
-                else if (args[1].equalsIgnoreCase("masterkey")) {
+                else if (args[2].equalsIgnoreCase("masterkey")) {
                     if (player.hasPermission("dodalock.give.masterkey")) {
-                        player.getInventory().addItem(ItemsManager.getMasterKey().getItemStack());
+                        enterPlayer.getInventory().addItem(ItemsManager.getMasterKey().getItemStack());
                     }
                     else {
                         ChatUtils.printMessage(player, "error.permission_give_command");
                     }
                 }
-                else if (args[1].equalsIgnoreCase("lock")) {
+                else if (args[2].equalsIgnoreCase("lock")) {
                     if (player.hasPermission("dodalock.give.lock")) {
-                        player.getInventory().addItem(ItemsManager.getLock().getItemStack());
+                        enterPlayer.getInventory().addItem(ItemsManager.getLock().getItemStack());
                     }
                     else {
                         ChatUtils.printMessage(player, "error.permission_give_command");
                     }
                 }
-                else if (args[1].equalsIgnoreCase("codelock")) {
+                else if (args[2].equalsIgnoreCase("codelock")) {
                     if (player.hasPermission("dodalock.give.codelock")) {
-                        player.getInventory().addItem(ItemsManager.getCodeLock().getItemStack());
+                        enterPlayer.getInventory().addItem(ItemsManager.getCodeLock().getItemStack());
                     }
                     else {
                         ChatUtils.printMessage(player, "error.permission_give_command");
                     }
                 }
-                else if (args[1].equalsIgnoreCase("bunchofkeys")) {
+                else if (args[2].equalsIgnoreCase("bunchofkeys")) {
                     if (player.hasPermission("dodalock.give.bunchofkeys")) {
-                        player.getInventory().addItem(ItemsManager.getBunchKeys().getItemStack());
+                        enterPlayer.getInventory().addItem(ItemsManager.getBunchKeys().getItemStack());
                     }
                     else {
                         ChatUtils.printMessage(player, "error.permission_give_command");

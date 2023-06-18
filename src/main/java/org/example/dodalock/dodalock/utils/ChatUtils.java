@@ -53,7 +53,8 @@ public class ChatUtils {
                 + ChatColor.WHITE + Configurations.getLanguage().translate("help.clear_command") + "\n" +
                 ChatColor.GOLD + "/dodalock clone: "
                 + ChatColor.WHITE + Configurations.getLanguage().translate("help.clone_command") + "\n" +
-                ChatColor.GOLD + "/dodalock give [codelock | lock | key | masterkey | bunchofkeys]: "
+                ChatColor.GOLD + "/dodalock give " + ChatColor.ITALIC + "player" + ChatColor.RESET + ChatColor.GOLD +
+                " [codelock | lock | key | masterkey | bunchofkeys]: "
                 + ChatColor.WHITE + Configurations.getLanguage().translate("help.give_command") + "\n" +
                 ChatColor.GOLD + "/dodalock reload: "
                 + ChatColor.WHITE + Configurations.getLanguage().translate("help.reload_command") + "\n";

@@ -1,6 +1,27 @@
 # Changelog
 
-## v1.0 - 17.16.2023
+### v.1.0 - 18.06.2023
+
+_Update #2._
+
+### Added
+
+- _The give team now has the opportunity to choose a 
+player who will be given an item._
+
+### Changed
+
+- _One of the checks has been made into a separate method._
+- _Update readme files._
+- _List of commands._
+
+### Fixed
+
+- _Configuration file._
+- _Language files._
+- _Removing all ordinary keys when cloning instead of one ordinary key._
+
+## v1.0 - 17.06.2023
 
 _Release update. Whoopee!!!_
 
@@ -19,7 +40,7 @@ because they were often repeated._
 - _Incorrect error display when using extra arguments 
 in the command._
 
-## v1.0 - 16.16.2023
+## v1.0 - 16.06.2023
 
 _Prerelease update. On the way to the first release._
 

@@ -137,7 +137,7 @@ public class MainConfiguration {
         getFileConfiguration().set("max_attempts_to_take_damage", 3);
 
         getFileConfiguration().setComments("enable_damage",
-                List.of("", "", "Setting enable a damage from the code lock during incorrect input password entry attempts. " +
+                List.of("", "", "Setting enable damage from the code lock during incorrect input password entry attempts. " +
                         "Default: true"));
         getFileConfiguration().setComments("max_attempts_to_take_damage",
                 List.of("", "Setting the maximum number of attempts in which damage from incorrect password entry is not inflicted. " +

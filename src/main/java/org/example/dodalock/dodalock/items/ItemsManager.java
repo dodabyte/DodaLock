@@ -66,6 +66,7 @@ public class ItemsManager {
 
     public static boolean isUsedKey(ItemStack itemStack) {
         return itemStack != null && itemStack.getItemMeta() != null &&
+                itemStack.getItemMeta().getPersistentDataContainer().getKeys().size() == 1 &&
                 itemStack.getItemMeta().getPersistentDataContainer().getKeys().toArray()[0].toString().
                 matches("[d][o][d][a][l][o][c][k][:][a-z]+([_][0-9]+){3}");
     }
