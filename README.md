@@ -136,7 +136,7 @@ To work with the plugin in the game, you need to enter the command
 
 `enable_master_key` - The setting allows you to use a universal key for administrators. Default: true.
 
-`enable_resourcepack` - Setting enable a custom resourcepack for the plugin. Default: true.
+`enable_resourcepack` - Setting enable a custom resource pack for the plugin. Setting enable a custom resource pack for the plugin. Enter false if you want to play without it or embed the resource pack into your server locally. Default: true.
 
 `resourcepack_url` - Setting responsible for the link to the resource pack. Default: http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip.
 

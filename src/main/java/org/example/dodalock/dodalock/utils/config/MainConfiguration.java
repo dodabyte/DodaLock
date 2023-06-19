@@ -123,13 +123,13 @@ public class MainConfiguration {
 
     private void setResourcePack() {
         getFileConfiguration().set("enable_resourcepack", true);
-        getFileConfiguration().set("resourcepack_url", "http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip");
+        getFileConfiguration().set("resourcepack_url", "http://resourcepack.host/dl/7ZA2pXlbKr7XdcomfcCnXirXU4PGDNcf/DodaLock.zip");
 
         getFileConfiguration().setComments("enable_resourcepack",
-                List.of("", "", "Setting enable a custom resourcepack for the plugin. Default: true"));
+                List.of("", "", "Setting enable a custom resource pack for the plugin. Enter 'false' if you want to play without it or embed the resource pack into your server locally. Default: true"));
         getFileConfiguration().setComments("resourcepack_url",
                 List.of("", "Setting responsible for the link to the resource pack. " +
-                        "Default: http://resourcepack.host/dl/CBdqxUZ66Q7b6HOV8OoVYM7pJjclsUEF/DodaLock.zip"));
+                        "Default: http://resourcepack.host/dl/7ZA2pXlbKr7XdcomfcCnXirXU4PGDNcf/DodaLock.zip"));
     }
 
     private void setDamage() {

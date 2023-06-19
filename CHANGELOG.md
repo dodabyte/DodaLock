@@ -1,5 +1,15 @@
 # Changelog
 
+### v.1.0 - 19.06.2023
+
+_Update #3._
+
+### Changed
+
+- _Resource pack preview._
+- _Link to the resource pack._
+- _Readme files._
+
 ### v.1.0 - 18.06.2023
 
 _Update #2._
