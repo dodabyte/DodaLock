@@ -90,13 +90,13 @@ public class MainConfiguration {
 
         // Ключ
         getFileConfiguration().createSection("items.key");
-        getFileConfiguration().set("items.key.shape", "%, $");
-        getFileConfiguration().set("items.key.shape_materials", "%: IRON_INGOT, $: LEVER");
+        getFileConfiguration().set("items.key.shape", "%, $, #");
+        getFileConfiguration().set("items.key.shape_materials", "%: IRON_NUGGET, $: STICK, #: IRON_INGOT");
 
         // Мастер ключ
         getFileConfiguration().createSection("items.master_key");
-        getFileConfiguration().set("items.master_key.shape", "%, $");
-        getFileConfiguration().set("items.master_key.shape_materials", "%: IRON_INGOT, $: COMMAND_BLOCK");
+        getFileConfiguration().set("items.master_key.shape", "%, $, #");
+        getFileConfiguration().set("items.master_key.shape_materials", "%: IRON_NUGGET, $: STICK, #: COMMAND_BLOCK");
 
         // Связка ключей
         getFileConfiguration().createSection("items.bunch_of_keys");
@@ -113,10 +113,10 @@ public class MainConfiguration {
                 List.of("Default: $: IRON_INGOT, *: REDSTONE_BLOCK, &: STONE_BUTTON, %: GLASS_PANE"));
         getFileConfiguration().setComments("items.lock.shape", List.of("Default: %%, %%"));
         getFileConfiguration().setComments("items.lock.shape_materials", List.of("Default: %: IRON_INGOT"));
-        getFileConfiguration().setComments("items.key.shape", List.of("Default: %, $"));
-        getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_INGOT, $: LEVER"));
-        getFileConfiguration().setComments("items.master_key.shape", List.of("Default: %, $"));
-        getFileConfiguration().setComments("items.master_key.shape_materials", List.of("Default: %: IRON_INGOT, $: COMMAND_BLOCK"));
+        getFileConfiguration().setComments("items.key.shape", List.of("Default: %, $, #"));
+        getFileConfiguration().setComments("items.key.shape_materials", List.of("Default: %: IRON_NUGGET, $: STICK, #: IRON_INGOT"));
+        getFileConfiguration().setComments("items.master_key.shape", List.of("Default: %, $, #"));
+        getFileConfiguration().setComments("items.master_key.shape_materials", List.of("Default: %: IRON_NUGGET, $: STICK, #: COMMAND_BLOCK"));
         getFileConfiguration().setComments("items.bunch_of_keys.shape", List.of("Default: -$-, $%$, -$-"));
         getFileConfiguration().setComments("items.bunch_of_keys.shape_materials", List.of("Default: %: IRON_INGOT, $: STRING"));
     }

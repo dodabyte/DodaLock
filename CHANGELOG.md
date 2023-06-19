@@ -9,6 +9,7 @@ _Update #3._
 - _Resource pack preview._
 - _Link to the resource pack._
 - _Readme files._
+- _Key craft._
 
 ### v.1.0 - 18.06.2023
 
