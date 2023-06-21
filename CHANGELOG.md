@@ -12,6 +12,7 @@ _Update #4._
 
 - _You cannot put a key in a bunch of keys that has been linked
   to coordinates with a negative number._
+- _Clearing the configuration file when entering `/remove` command._
 
 ### v.1.0 - 19.06.2023
 

@@ -112,15 +112,19 @@ public class GlobalCommands implements CommandExecutor {
                     return true;
                 }
             }
-            else if (args[2].matches("[a-z]+([_][0-9]+){3}")) { // Иначе выбор по названию локации в списке
+            else if (args[2].matches("[a-z]+([_][-]?[0-9]+){3}")) { // Иначе выбор по названию локации в списке
                 if (args[1].equalsIgnoreCase("codelock") && Configurations.getLocks().isCodeLock(args[2]) &&
                         Configurations.getLocks().isPlayerInCodeLock(args[2], player)) {
                     Configurations.getLocks().removeCodeLock(args[2]);
+                    Configurations.getLocks().save();
+                    Configurations.getLocks().reload();
                     ChatUtils.printMessage(player, "success.remove_code_lock");
                 }
                 else if (args[1].equalsIgnoreCase("lock") && Configurations.getLocks().isLock(args[2]) &&
                         Configurations.getLocks().isOwnerInLock(args[2], player)) {
                     Configurations.getLocks().removeLock(args[2]);
+                    Configurations.getLocks().save();
+                    Configurations.getLocks().reload();
                     ChatUtils.printMessage(player, "success.remove_lock");
                 }
                 else {
