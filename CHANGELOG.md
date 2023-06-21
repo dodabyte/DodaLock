@@ -11,7 +11,20 @@ _Update #3._
 - _Readme files._
 - _Key craft._
 
-### v.1.0 - 18.06.2023
+### v1.0 - 21.06.2023
+
+_Update #3._
+
+### Added
+
+- _Video guide (review) on the plugin._
+
+### Fixed
+
+- _You cannot put a key in a bunch of keys that has been linked 
+to coordinates with a negative number._
+
+### v1.0 - 18.06.2023
 
 _Update #2._
 
