@@ -47,10 +47,7 @@ tied to any lock) key.
 
 ## Video
 
-_Coming soon._
-
-A video with instructions for use is on my YouTube channel 
-at this link.
+A video with instructions for using the plugin is on my YouTube channel at this [link](https://youtu.be/pOgOVg9vnRY).
 
 If you have made a video about my plugin, 
 then I ask you to send it to me.
