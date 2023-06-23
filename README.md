@@ -183,4 +183,4 @@ Permissions for administrators:
 
 This plugin is compatible with Spigot. 
 Using CraftBukkit will not work. 
-The versions of Minecraft that are currently supported are 1.19.
+The versions of Minecraft that are currently supported are 1.19 - 1.20.1.
