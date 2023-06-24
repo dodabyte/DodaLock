@@ -6,7 +6,7 @@ Spigot plugin adds locks and code locks for doors, trapdoors, barrels and chests
 
 ## Features
 
-* Close your doors, hatches, barrels and chests from other players.
+* Close your doors, trapdoors, barrels and chests from other players.
 * The ability to use both ordinary and code locks.
 * A code lock, an ordinary lock, a key to it and a bunch of keys has
   their own craft.
