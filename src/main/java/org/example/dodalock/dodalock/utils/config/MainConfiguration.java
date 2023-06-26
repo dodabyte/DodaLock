@@ -31,7 +31,7 @@ public class MainConfiguration {
         getFileConfiguration().options().copyDefaults(true);
 
         save();
-        reload;
+        reload();
     }
 
     public void setup() {
