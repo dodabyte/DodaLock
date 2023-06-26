@@ -21,9 +21,7 @@ public class LocksConfiguration {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Oops, error creating the configuration file.");
-            }
+            } catch (Exception ignored) {}
             fileLocksConfiguration = YamlConfiguration.loadConfiguration(file);
             setup();
         }

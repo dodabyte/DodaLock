@@ -44,7 +44,7 @@ error:
   loc_not_exist: 'A lock with that name does not exist.'
   ordinary_key_for_clone_not_exist: 'You cannot clone this key, as there is no ordinary key in the inventory.'
   item_clone: 'You can clone only the key attached to the lock.'
-  open_object_with_code_lock: 'You cannot open this object because a combination lock is installed. Enter the password in the combination lock.'
+  open_object_with_code_lock: 'You cannot open this object because a code lock is installed. Enter the password in the code lock.'
   open_object_with_lock: 'You cannot open this object because the lock is installed. Use the key that fits this lock.'
   installing_lock_with_code_lock: 'You cannot install a lock, because a code lock is already installed on this object.'
   installing_lock_with_lock: 'You cannot install a lock, because a lock is already installed on this object.'

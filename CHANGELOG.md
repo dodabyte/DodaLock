@@ -1,5 +1,17 @@
 # Changelog
 
+### v1.0 - 26.06.2023
+
+_Update #5._
+
+### Fixed
+
+- _Responses to some actions have the text "combination lock" 
+instead of "combination lock"._
+- _The console was written about the error of creating the config, 
+while the config was created normally._
+- _Re-creating configurations during server opening._
+
 ### v1.0 - 21.06.2023
 
 _Update #4._

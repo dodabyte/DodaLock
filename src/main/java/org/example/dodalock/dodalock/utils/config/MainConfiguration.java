@@ -23,13 +23,15 @@ public class MainConfiguration {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Oops, error creating the configuration file.");
-            }
+            } catch (Exception ignored) {}
+            fileConfiguration = YamlConfiguration.loadConfiguration(file);
+            setup();
         }
-        fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        else fileConfiguration = YamlConfiguration.loadConfiguration(file);
         getFileConfiguration().options().copyDefaults(true);
-        setup();
+
+        save();
+        reload;
     }
 
     public void setup() {

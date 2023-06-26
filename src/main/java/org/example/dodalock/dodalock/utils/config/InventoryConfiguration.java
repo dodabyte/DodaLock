@@ -26,9 +26,7 @@ public class InventoryConfiguration {
         if (!file.exists()) {
             try {
                 file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Oops, error creating the configuration file.");
-            }
+            } catch (Exception ignored) {}
             fileInventoryConfiguration = YamlConfiguration.loadConfiguration(file);
             setup();
         }
