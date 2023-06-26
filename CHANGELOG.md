@@ -7,7 +7,7 @@ _Update #5._
 ### Fixed
 
 - _Responses to some actions have the text "combination lock" 
-instead of "combination lock"._
+instead of "code lock"._
 - _The console was written about the error of creating the config, 
 while the config was created normally._
 - _Re-creating configurations during server opening._
